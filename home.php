@@ -66,6 +66,10 @@
     <?php include('route/map_route.php'); ?>
     <?php } else if($_GET['view'] == 'MYAPPOINTMENT') { ?>
     <?php include('route/my_appointment.php'); ?>
+    <?php } else if($_GET['view'] == 'SETTING') { ?>
+    <?php include('route/setting.php'); ?>
+    <?php } else if($_GET['view'] == 'SPECIFICEEMPLOYEE') { ?>
+    <?php include('route/company_employee_specific.php'); ?>   
     <?php } else { ?>
 
         
@@ -99,8 +103,10 @@
                     <!-- menu -->
                     <div class="listview-title mt-1">Menu</div>
                     <ul class="listview flush transparent no-line image-listview">
+                       
+                        <?php  if($userSession[0]['designation'] == 2){ ?>
                         <li>
-                            <a href="home.php?view=<?php echo 'MYORDERS'; ?>" class="item">
+                            <a href="home.php?view=MYAPPOINTMENT" class="item">
                                 <div class="icon-box bg-primary">
                                     <ion-icon name="pie-chart-outline"></ion-icon>
                                 </div>
@@ -110,6 +116,20 @@
                                 </div>
                             </a>
                         </li>
+                        <?php } else { ?>
+                        <li>
+                            <a href="home.php?view=MYBOOKING" class="item">
+                                <div class="icon-box bg-primary">
+                                    <ion-icon name="pie-chart-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    My Bookings (Appointment)
+                                   
+                                </div>
+                            </a>
+                        </li>
+                        <?php } ?>
+                       
                         
                     
                     </ul>
@@ -129,7 +149,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="logout.php" class="item">
+                            <a href="./logout.php" class="item">
                                 <div class="icon-box bg-primary">
                                     <ion-icon name="log-out-outline"></ion-icon>
                                 </div>

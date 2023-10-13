@@ -41,7 +41,37 @@
                                 $dateTodayObj = new DateTime($dateToday);
                                 $daysDifference = $dateTodayObj->diff($dateAppointmentObj)->days;
 
+
+                                $time_appointment = $bookingList[$key]['time_appointment'];
+
+                                // Convert the time to a DateTime object to handle the conversion
+                                $datetime = new DateTime($time_appointment);
+
+                                // Format the time in 12-hour format with AM/PM
+                                $formatted_time = $datetime->format("g:i A");
+
                                 // Output messages based on the date comparison
+                                $bid = $bookingList[$key]['bid'];
+                                $checker = $portCont->checkConfirmation($bid);
+                                
+                                if (!empty($checker)) {
+                                    $estimated_minutes = $checker[0]['estimated_minutes'];
+                                
+                                    // Create a DateTime object from the formatted time
+                                    $appointment_datetime = new DateTime($formatted_time);
+                                
+                                    // Add the estimated minutes to the appointment time
+                                    $eta_datetime = clone $appointment_datetime; // Create a copy to avoid modifying the original
+                                    $eta_datetime->add(new DateInterval("PT{$estimated_minutes}M"));
+                                
+                                    // Format the ETA time
+                                    $dt = $eta_datetime->format("g:i A");
+                                    $eta = $dt.'-'.$estimated_minutes.'mins';
+                                    $assign = $checker[0]['emp_id'];
+                                } else {
+                                    $eta = '';
+                                    $assign = '';
+                                }
                             ?>  
                                 <li>
                                     <a href="#" data-toggle="modal" data-target="#specificBookingDetails<?php echo $bookingList[$key]['bid']; ?>" class="item">
@@ -51,8 +81,12 @@
                                         <div class="in">
                                             <div>
                                                 <?php echo $bookingList[$key]['company']; ?>
-                                                <div class="text-muted">SERVICE : <?php echo $bookingList[$key]['servicename']; ?></div>
-                                                <div class="text-muted">DATE : <?php echo $dateAppointment; ?></div>
+                                                <div class="text-muted">👨‍🔧 SERVICE : <?php echo $bookingList[$key]['servicename']; ?></div>
+                                                <div class="text-muted">📅 DATE : <?php echo $dateAppointment; ?></div>
+                                                <div class="text-muted">⏰ TIME : <?php echo $formatted_time; ?></div>
+                                                <div class="text-muted">📍 STATUS : <?php echo $bookingList[$key]['status']; ?></div>
+                                                <div class="text-muted">⏱ ETA :  <?php echo  $eta; ?></div>
+                                                <div class="text-muted">👨‍🔧 ASSIGN :  <?php echo $assign; ?></div>
                                             </div>
                                             <?php if ($isToday) { ?>
                                                 <span class="badge badge-primary">today</span>

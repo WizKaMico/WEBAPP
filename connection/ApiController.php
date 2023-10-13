@@ -980,4 +980,283 @@ class appController extends DBController
     }
 
 
+    function insertEmployee($company_code, $emp_id, $emp_name, $emp_designation)
+    {
+        $query = "INSERT INTO tbl_company_employee (company_code, emp_id, emp_name, emp_designation, date_created, status) VALUES (?,?,?,?,?,?)";
+        $params = array(             
+            array(
+                "param_type" => "i",
+                "param_value" => $company_code
+            ),array(
+                "param_type" => "s",
+                "param_value" => $emp_id
+            ),array(
+                "param_type" => "s",
+                "param_value" => $emp_name
+            ),array(
+                "param_type" => "s",
+                "param_value" => $emp_designation
+            ),array(
+                "param_type" => "s",
+                "param_value" => date('Y-m-d')
+            ),array(
+                "param_type" => "s",
+                "param_value" => 'AVAIL'
+            )
+        );
+    
+        $this->insertDB($query, $params);
+    }
+
+    function myEmployeeList($code)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $query = "SELECT COUNT(*) as total FROM tbl_company_employee WHERE company_code = ?";
+
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            )
+        );
+        
+        $TotalEmployeeResult = $this->getDBResult($query, $params);
+        return $TotalEmployeeResult;    
+    }
+
+    function getCompanyEmployee($code)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $query = "SELECT * FROM tbl_company_employee WHERE company_code = ?";
+
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            )
+        );
+        
+        $TotalEmployeeResult = $this->getDBResult($query, $params);
+        return $TotalEmployeeResult;   
+    }
+
+    function getSpecificEmployee($empId)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $query = "SELECT * FROM tbl_company_employee WHERE emp_id = ?";
+
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $empId
+            )
+        );
+        
+        $TotalEmployeeResult = $this->getDBResult($query, $params);
+        return $TotalEmployeeResult;   
+    }
+
+    function updateEmployee($emp_id, $emp_name, $emp_designation)
+    {
+        $query = "UPDATE tbl_company_employee SET emp_name = ?, emp_designation = ? WHERE emp_id = ?";
+
+        $params = array(
+            
+            array(
+                "param_type" => "s",
+                "param_value" => $emp_name 
+            ), array(
+                "param_type" => "s",
+                "param_value" => $emp_designation 
+            ), array(
+                "param_type" => "s",
+                "param_value" => $emp_id 
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function updateAppointmentSetOwner($bid, $status)
+    {
+        $query = "UPDATE tbl_user_booking SET status = ? WHERE bid = ?";
+
+        $params = array(
+            
+            array(
+                "param_type" => "s",
+                "param_value" => $status 
+            ), array(
+                "param_type" => "i",
+                "param_value" => $bid 
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function ListAvailEmployee($code)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $query = "SELECT * FROM tbl_company_employee WHERE company_code = ? AND status = 'AVAIL'";
+
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            )
+        );
+        
+        $TotalEmployeeResult = $this->getDBResult($query, $params);
+        return $TotalEmployeeResult;   
+    }
+
+    function addAppointmentSetOwnerAfterConfirmation($bid, $emp_id, $estimated_minutes)
+    {
+        $query = "INSERT INTO tbl_assigned_employee (bid, emp_id, estimated_minutes, date_confirmed) VALUES (?,?,?,?)";
+        $params = array(             
+            array(
+                "param_type" => "i",
+                "param_value" => $bid
+            ),array(
+                "param_type" => "s",
+                "param_value" => $emp_id
+            ),array(
+                "param_type" => "i",
+                "param_value" => $estimated_minutes
+            ),array(
+                "param_type" => "s",
+                "param_value" => date('Y-m-d')
+            )
+        );
+    
+        $this->insertDB($query, $params);
+    }
+
+    function checkConfirmation($bid)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $query = "SELECT * FROM tbl_assigned_employee WHERE bid = ?";
+
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $bid
+            )
+        );
+        
+        $TotalEmployeeResult = $this->getDBResult($query, $params);
+        return $TotalEmployeeResult;   
+    }
+
+    function updateAppointmentSetOwnerAfterConfirmation($bid, $estimated_minutes)
+    {
+        $query = "UPDATE tbl_assigned_employee SET estimated_minutes = ? WHERE bid = ?";
+
+        $params = array(
+            
+            array(
+                "param_type" => "i",
+                "param_value" => $estimated_minutes 
+            ), array(
+                "param_type" => "i",
+                "param_value" => $bid 
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function updateEmployeeAfterCompletion($emp_id, $stat)
+    {
+        $query = "UPDATE tbl_company_employee SET status = ? WHERE emp_id = ?";
+
+        $params = array(
+            
+            array(
+                "param_type" => "s",
+                "param_value" => $stat
+            ), array(
+                "param_type" => "s",
+                "param_value" => $emp_id 
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function specificBookingServicesToday($serviceId)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $query = "SELECT COUNT(*) as total FROM tbl_user_booking WHERE sid = ? AND date_appointment = ?";
+
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $serviceId
+            ),array(
+                "param_type" => "s",
+                "param_value" => date('Y-m-d')
+            )
+        );
+        
+        $TotalEmployeeResult = $this->getDBResult($query, $params);
+        return $TotalEmployeeResult;   
+    }
+
+
+    function specificBookingServicesTotal($serviceId)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $query = "SELECT COUNT(*) as total FROM tbl_user_booking WHERE sid = ?";
+
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $serviceId
+            )
+        );
+        
+        $TotalEmployeeResult = $this->getDBResult($query, $params);
+        return $TotalEmployeeResult;   
+    }
+
+    function specificEmployeeeBookingServicesToday($empId)
+    {
+        $query = "SELECT COUNT(*) as total FROM tbl_assigned_employee WHERE emp_id = ? AND date_confirmed = ?";
+
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $empId
+            ),array(
+                "param_type" => "s",
+                "param_value" => date('Y-m-d')
+            )
+        );
+        
+        $TotalEmployeeResult = $this->getDBResult($query, $params);
+        return $TotalEmployeeResult;   
+    }
+
+    function specificEmployeeeBookingServicesTotal($empId)
+    {
+        $query = "SELECT COUNT(*) as total FROM tbl_assigned_employee WHERE emp_id = ?";
+
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $empId
+            )
+        );
+        
+        $TotalEmployeeResult = $this->getDBResult($query, $params);
+        return $TotalEmployeeResult;   
+    }
+
+
 }

@@ -23,6 +23,7 @@
         <!-- Apply Loan Action Sheet -->
         <?php include('modal/companyServices.php'); ?> 
         <?php include('modal/companyPromo.php'); ?> 
+        <?php include('modal/addEmployee.php'); ?>
         <!-- * Apply Loan Action Sheet -->
 
         
@@ -65,8 +66,20 @@
                            <div class="value"><?php echo $OwnerPromoCount[0]['total']; ?></div>
                     </div>
                 </div>
-                
             </div>
+
+            <div class="row mt-2">
+                <div class="col-12">
+                  <a href="#" class="button" data-toggle="modal" data-target="#addEmployee">
+                        <div class="stat-box">
+                            <div class="title">TOTAL EMPLOYEE</div>
+                            <div class="value"><?php echo $OwnerEmployeeCount[0]['total']; ?></div>
+                        </div>
+                   </a>
+                </div>
+            </div>
+
+           
           
 
         </div>
@@ -75,7 +88,6 @@
         <div class="section full mt-4 mb-3">
             <div class="section-heading padding">
                 <h2 class="title">My Services (Services Created)</h2>
-                <!-- <a href="home.php?view=<?php echo 'PRODUCTS'; ?>" class="link">View All</a> -->
             </div>
             <div class="shadowfix carousel-multiple owl-carousel owl-theme">
                 <?php 
@@ -101,10 +113,6 @@
             </div>
         </div>  
 
-
-        
-        
-        
         <div class="section full mt-4 mb-3">
             <div class="section-heading padding">
                 <h2 class="title">My Promos (Promos Created)</h2>
@@ -133,4 +141,32 @@
                 <?php } } ?>
         
             </div>
-        </div>     
+        </div>   
+        
+        
+        <div class="section full mt-4 mb-3">
+            <div class="section-heading padding">
+                <h2 class="title">My Employee (List)</h2>
+            </div>
+            <div class="shadowfix carousel-multiple owl-carousel owl-theme">
+                <?php 
+                    $employee = $portCont->getCompanyEmployee($code); 
+                    if(!empty($employee)){
+                    foreach ($employee as $key => $value) {
+                ?>   
+                <!-- item -->
+                <div class="item">
+                    <a href="home.php?view=SPECIFICEEMPLOYEE&employee_id=<?php echo $employee[$key]['emp_id']; ?>">
+                        <div class="blog-card">
+                            <div class="text">
+                                <h4 class="title" style="text-align:center;"><?php echo $employee[$key]['emp_name']; ?></h4>
+                                <p style="text-align:center; margin-top:-40px;"><?php echo $employee[$key]['emp_designation']; ?></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- * item -->
+                <?php } } ?>
+        
+            </div>
+        </div>

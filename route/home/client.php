@@ -55,7 +55,7 @@
                     foreach ($company as $key => $value) {
                 ?>   
              
-                <div class="col-6">
+                <div class="col-6" style="margin-top:10px;">
                 <a href="home.php?view=SPECIFICSTORE&ccode=<?php echo $company[$key]['code']; ?>">
                     <div class="stat-box">
                         <?php if(!empty($company[$key]['image'])){ ?>

@@ -41,7 +41,36 @@
                                 $dateTodayObj = new DateTime($dateToday);
                                 $daysDifference = $dateTodayObj->diff($dateAppointmentObj)->days;
 
+                                $time_appointment = $appointmentList[$key]['time_appointment'];
+
+                                // Convert the time to a DateTime object to handle the conversion
+                                $datetime = new DateTime($time_appointment);
+
+                                // Format the time in 12-hour format with AM/PM
+                                $formatted_time = $datetime->format("g:i A");
+
                                 // Output messages based on the date comparison
+                                $bid = $appointmentList[$key]['bid'];
+                                $checker = $portCont->checkConfirmation($bid);
+                                
+                                if (!empty($checker)) {
+                                    $estimated_minutes = $checker[0]['estimated_minutes'];
+                                
+                                    // Create a DateTime object from the formatted time
+                                    $appointment_datetime = new DateTime($formatted_time);
+                                
+                                    // Add the estimated minutes to the appointment time
+                                    $eta_datetime = clone $appointment_datetime; // Create a copy to avoid modifying the original
+                                    $eta_datetime->add(new DateInterval("PT{$estimated_minutes}M"));
+                                
+                                    // Format the ETA time
+                                    $dt = $eta_datetime->format("g:i A");
+                                    $eta = $dt.'-'.$estimated_minutes.'mins';
+                                    $assign = $checker[0]['emp_id'];
+                                } else {
+                                    $eta = '';
+                                    $assign = '';
+                                }
                             ?>  
                                 <li>
                                     <a href="#" data-toggle="modal" data-target="#specificAppointmentDetails<?php echo $appointmentList[$key]['bid']; ?>" class="item">
@@ -51,8 +80,12 @@
                                         <div class="in">
                                             <div>
                                             <?php echo $appointmentList[$key]['lname']; ?> , <?php echo $appointmentList[$key]['fname']; ?>
-                                                <div class="text-muted">SERVICE : <?php echo $appointmentList[$key]['servicename']; ?></div>
-                                                <div class="text-muted">DATE : <?php echo $dateAppointment; ?></div>
+                                                <div class="text-muted">👨‍🔧 SERVICE : <?php echo $appointmentList[$key]['servicename']; ?></div>
+                                                <div class="text-muted">📅 DATE : <?php echo $dateAppointment; ?></div>
+                                                <div class="text-muted">⏰ TIME : <?php echo $formatted_time; ?></div>
+                                                <div class="text-muted">📍 STATUS :  <?php echo $appointmentList[$key]['status']; ?></div>
+                                                <div class="text-muted">⏱ ETA :  <?php echo  $eta; ?></div>
+                                                <div class="text-muted">👨‍🔧 ASSIGN :  <?php echo $assign; ?></div>
                                             </div>
                                             <?php if ($isToday) { ?>
                                                 <span class="badge badge-primary">today</span>
@@ -62,7 +95,11 @@
                                         </div>
                                     </a>
                                 </li>
+                                <?php if($appointmentList[$key]['status'] == 'PENDING' || $appointmentList[$key]['status'] == 'DECLINE') { ?>
                                 <?php include('modal/myAppointmentSpecific.php'); ?> 
+                                <?php } else { ?> 
+                                <?php include('modal/myAppointmentSpecificConfirmed.php'); ?> 
+                                <?php } ?>
                             <?php } ?>
                         <?php }
                     ?>

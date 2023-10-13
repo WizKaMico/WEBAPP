@@ -12,7 +12,7 @@
                       
                     </div>
                     <div class="right">
-                        <a href="#" class="button" data-toggle="modal" data-target="#specificService">
+                        <a href="#" class="button" data-toggle="modal" data-target="#specificEmployee">
                             <ion-icon name="add-outline"></ion-icon>
                         </a>
                     </div>
@@ -32,22 +32,22 @@
         <div class="section">
             <div class="row mt-2">
                 <?php 
-                    $serviceId = $_GET['service_id'];
-                    $serviceSpecific = $portCont->getSpecificServices($serviceId); 
-                    if(!empty($serviceSpecific)){
-                    foreach ($serviceSpecific as $key => $value) {
+                    $empId = $_GET['employee_id'];
+                    $employeeSpecific = $portCont->getSpecificEmployee($empId); 
+                    if(!empty($employeeSpecific)){
+                    foreach ($employeeSpecific as $key => $value) {
                 ?>   
                 <div class="col-12">
                     <div class="stat-box">
-                        <img src="./<?php echo $serviceSpecific[$key]['image']; ?>" style="width:100%;"/>
-                        <hr />
-                        <div class="title" style="text-align:center; font-size:20px;"><?php echo $serviceSpecific[$key]['servicename']; ?></div>
-                        <div class="value"></div>
+                        <div class="title" style="text-align:center; font-size:20px;">FULLNAME : <?php echo $employeeSpecific[$key]['emp_name']; ?></div>
+                        <div class="value" style="text-align:center; font-size:20px;">EID : <?php echo $employeeSpecific[$key]['emp_id']; ?></div>
+                        <div class="value" style="text-align:center; font-size:20px;">ROLE : <?php echo $employeeSpecific[$key]['emp_designation']; ?></div>
+                        
                     </div>
                 </div>
                 <?php } ?>
                         
-                <?php include('modal/companySpecificServices.php'); ?> 
+                <?php include('modal/companySpecificEmployee.php'); ?> 
             
                 <?php } ?>
             </div>
@@ -55,16 +55,16 @@
             <div class="row mt-2">
                  <div class="col-6">
                         <div class="stat-box">
+                            <?php  $serviceSpecificmployeeToday = $portCont->specificEmployeeeBookingServicesToday($empId);  ?>
                             <div class="title">BOOKING TODAY</div>
-                            <?php  $serviceSpecificToday = $portCont->specificBookingServicesToday($serviceId);  ?>
-                            <div class="value"><?php if(!empty($serviceSpecificToday)){ echo $serviceSpecificToday[0]['total'];  } else {  echo '0'; } ?> </div>
+                            <div class="value"><?php if(!empty($serviceSpecificmployeeToday)){ echo $serviceSpecificmployeeToday[0]['total'];  } else {  echo '0'; } ?> </div>
                         </div>
                  </div>
                   <div class="col-6">
                         <div class="stat-box">
-                            <?php  $serviceSpecificTotal = $portCont->specificBookingServicesTotal($serviceId);  ?>
+                             <?php  $serviceSpecificmployeeTotal = $portCont->specificEmployeeeBookingServicesTotal($empId);  ?>
                             <div class="title">TOTAL BOOKING</div>
-                            <div class="value"><?php if(!empty($serviceSpecificTotal)){ echo $serviceSpecificTotal[0]['total'];  } else {  echo '0'; } ?> </div>
+                            <div class="value"><?php if(!empty($serviceSpecificmployeeTotal)){ echo $serviceSpecificmployeeTotal[0]['total'];  } else {  echo '0'; } ?> </div>
                         </div>
                   </div>         
             </div>

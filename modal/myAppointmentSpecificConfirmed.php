@@ -6,7 +6,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="action-sheet-content">
-                        <form  method="POST" enctype="multipart/form-data" action="home.php?view=HOME&action=serviceAcceptance">
+                        <form  method="POST" enctype="multipart/form-data" action="home.php?view=HOME&action=serviceConfirmation">
                            <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">CAR MAKE</label>
@@ -35,11 +35,56 @@
 
                             <div class="form-group basic">
                                 <div class="input-wrapper">
+                                    <label class="label" for="email1">ASSIGN EMPLOYEE</label>
+                                    <?php 
+
+                                    $bid = $appointmentList[$key]['bid'];
+                                    $checker = $portCont->checkConfirmation($bid); 
+                                    if(!empty($checker)){  
+                                    
+                                    ?>
+                                    <input type="text" class="form-control" id="email1" name="emp_id" value="<?php echo strtoupper( $checker[0]['emp_id']); ?>" readonly="">
+                                    <?php } else { ?>
+                                    
+                                    <select class="form-control" name="emp_id" id="email1" require="">
+                                        <?php    
+
+                                            $availEmployee = $portCont->ListAvailEmployee($code); 
+                                            if(!empty($availEmployee)){
+                                            foreach ($availEmployee as $key => $value) {
+                                        ?>     
+                                        <option value="<?php echo $availEmployee[$key]['emp_id']; ?>"><?php echo $availEmployee[$key]['emp_name']; ?></option>
+                                        <?php } } ?>
+                                    </select>
+                                    
+                                    <?php } ?>
+                                    <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <label class="label" for="email1">ESTIMATE COMPLETION (MINUTES)</label>
+                                    <?php 
+                                    $bid = $appointmentList[$key]['bid'];
+                                    $checker = $portCont->checkConfirmation($bid); 
+                                    if(!empty($checker)){ 
+                                    ?>
+                                    <input type="number" class="form-control" id="email1" name="estimated_minutes" value="<?php echo $checker[0]['estimated_minutes']; ?>">
+                                    <?php } else { ?> 
+                                    <input type="number" class="form-control" id="email1" name="estimated_minutes" placeholder="10">
+                                    <?php } ?>
+                                    <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
                                     <label class="label" for="email1">STATUS</label>
                                     <select class="form-control" name="status" id="email1" require="">
                                         <option><?php echo $appointmentList[$key]['status']; ?> (CURRENT)</option>
-                                        <option value="CONFIRM">CONFIRM</option>
-                                        <option value="DECLINE">DECLINE</option>
+                                        <option value="IN-PROGRESS">IN-PROGRESS</option>
+                                        <option value="COMPLETED">COMPLETED</option>
                                     </select>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
@@ -47,7 +92,7 @@
 
                             <div class="form-group basic">
                                 <div class="input-wrapper">
-                                   <button type="submit" name="serviceAcceptance" class="btn btn-primary btn-block btn-lg">UPDATE APPOINTMENT</button>
+                                   <button type="submit" name="serviceConfirmation" class="btn btn-primary btn-block btn-lg">UPDATE APPOINTMENT</button>
                                 </div>
                             </div>
 

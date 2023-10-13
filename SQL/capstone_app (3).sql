@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 13, 2023 at 05:03 AM
+-- Generation Time: Oct 13, 2023 at 10:49 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 5.6.40
 
@@ -34,6 +34,56 @@ CREATE TABLE `remember_me_tokens` (
   `token` varchar(255) DEFAULT NULL,
   `expiration_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_assigned_employee`
+--
+
+CREATE TABLE `tbl_assigned_employee` (
+  `apid` int(11) NOT NULL,
+  `bid` int(11) NOT NULL,
+  `emp_id` varchar(50) NOT NULL,
+  `estimated_minutes` int(50) NOT NULL,
+  `date_confirmed` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_assigned_employee`
+--
+
+INSERT INTO `tbl_assigned_employee` (`apid`, `bid`, `emp_id`, `estimated_minutes`, `date_confirmed`) VALUES
+(1, 8, '20231014-6825', 30, '2023-10-14'),
+(2, 7, '20231014-7042', 60, '2023-10-14'),
+(3, 9, '20231014-7849', 20, '2023-10-14');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_company_employee`
+--
+
+CREATE TABLE `tbl_company_employee` (
+  `eid` int(11) NOT NULL,
+  `company_code` int(50) NOT NULL,
+  `emp_id` varchar(250) NOT NULL,
+  `emp_name` varchar(250) NOT NULL,
+  `emp_designation` varchar(250) NOT NULL,
+  `date_created` date NOT NULL,
+  `status` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_company_employee`
+--
+
+INSERT INTO `tbl_company_employee` (`eid`, `company_code`, `emp_id`, `emp_name`, `emp_designation`, `date_created`, `status`) VALUES
+(1, 9777, '20231014-6825', 'Gerald', 'Mechanic IIII', '2023-10-14', 'AVAIL'),
+(2, 9777, '20231014-7726', 'Gerald Mico', 'Mechanic II', '2023-10-14', 'AVAIL'),
+(3, 9777, '20231014-7042', 'Gerald Mico', 'Chief Mechanic', '2023-10-14', 'AVAIL'),
+(4, 9777, '20231014-7849', 'John Paul', 'Chief Mechanic', '2023-10-14', 'AVAIL'),
+(5, 9777, '20231014-6793', 'Zyke Zyke', 'Chief Mechanic IV', '2023-10-14', 'AVAIL');
 
 -- --------------------------------------------------------
 
@@ -138,12 +188,15 @@ CREATE TABLE `tbl_user_booking` (
 --
 
 INSERT INTO `tbl_user_booking` (`bid`, `sid`, `booked_by`, `car_model`, `car_brand`, `date_appointment`, `time_appointment`, `photo`, `promo_code`, `status`, `booking_date`) VALUES
-(1, 2, 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '2023-10-11', '20:18', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'PROMO10', 'PENDING', '2023-10-10'),
+(1, 2, 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '2023-10-11', '20:18', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'PROMO10', 'PENDING (CURRENT)', '2023-10-10'),
 (2, 6, 7676, 'SUZUKI ESPRESSO', 'SUZUKI', '2023-10-11', '20:54', 'UserClientCarDetails/7676/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'PENDING', '2023-10-10'),
 (3, 3, 7676, 'Suzuki Espresso', 'Suzuki', '2023-10-12', '15:51', 'UserClientCarDetails/7676/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'PENDING', '2023-10-11'),
 (4, 6, 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '2023-10-13', '22:13', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'PENDING', '2023-10-11'),
 (5, 8, 6973, 'SUZUKI MARUTI', 'MARUTI ESPRESSO', '2023-10-12', '23:24', 'UserClientCarDetails/6973/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'PENDING', '2023-10-11'),
-(6, 9, 8677, 'SUZUKI ESPRESSO', 'SUZUKI', '2023-10-13', '12:00', 'UserClientCarDetails/8677/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'PENDING', '2023-10-12');
+(6, 9, 8677, 'SUZUKI ESPRESSO', 'SUZUKI', '2023-10-13', '12:00', 'UserClientCarDetails/8677/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'PENDING', '2023-10-12'),
+(7, 1, 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '2023-10-07', '14:57', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'COMPLETED', '2023-10-14'),
+(8, 1, 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '2023-10-14', '19:58', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'COMPLETED', '2023-10-14'),
+(9, 4, 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '2023-10-14', '18:45', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'COMPLETED', '2023-10-14');
 
 -- --------------------------------------------------------
 
@@ -308,7 +361,16 @@ INSERT INTO `tbl_user_security` (`sid`, `email`, `code`, `status`, `date_created
 (20, 'thenextlevelplay@gmail.com', 6820, 'USED', '2023-10-11'),
 (21, 'helloblob@gmail.com', 7229, 'USED', '2023-10-12'),
 (22, 'Zykecastro8@gmail.com', 9203, 'USED', '2023-10-12'),
-(23, 'helloblob@gmail.com', 6764, 'USED', '2023-10-13');
+(23, 'helloblob@gmail.com', 6764, 'USED', '2023-10-13'),
+(24, 'tricore012@gmail.com', 6718, 'USED', '2023-10-13'),
+(25, 'revcoreitsolution@gmail.com', 6779, 'USED', '2023-10-13'),
+(26, 'tricore012@gmail.com', 7710, 'USED', '2023-10-13'),
+(27, 'revcoreitsolution@gmail.com', 8110, 'USED', '2023-10-14'),
+(28, 'revcoreitsolution@gmail.com', 8782, 'UNUSED', '2023-10-14'),
+(29, 'tricore012@gmail.com', 8600, 'USED', '2023-10-14'),
+(30, 'revcoreitsolution@gmail.com', 8444, 'USED', '2023-10-14'),
+(31, 'revcoreitsolution@gmail.com', 6967, 'USED', '2023-10-14'),
+(32, 'tricore012@gmail.com', 8105, 'USED', '2023-10-14');
 
 -- --------------------------------------------------------
 
@@ -350,6 +412,18 @@ INSERT INTO `tbl_user_store_services` (`sid`, `code`, `category`, `servicename`,
 ALTER TABLE `remember_me_tokens`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `tbl_assigned_employee`
+--
+ALTER TABLE `tbl_assigned_employee`
+  ADD PRIMARY KEY (`apid`);
+
+--
+-- Indexes for table `tbl_company_employee`
+--
+ALTER TABLE `tbl_company_employee`
+  ADD PRIMARY KEY (`eid`);
 
 --
 -- Indexes for table `tbl_information_image`
@@ -422,6 +496,18 @@ ALTER TABLE `remember_me_tokens`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `tbl_assigned_employee`
+--
+ALTER TABLE `tbl_assigned_employee`
+  MODIFY `apid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tbl_company_employee`
+--
+ALTER TABLE `tbl_company_employee`
+  MODIFY `eid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `tbl_information_image`
 --
 ALTER TABLE `tbl_information_image`
@@ -443,7 +529,7 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `tbl_user_booking`
 --
 ALTER TABLE `tbl_user_booking`
-  MODIFY `bid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `bid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tbl_user_information`
@@ -473,7 +559,7 @@ ALTER TABLE `tbl_user_promo`
 -- AUTO_INCREMENT for table `tbl_user_security`
 --
 ALTER TABLE `tbl_user_security`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `tbl_user_store_services`

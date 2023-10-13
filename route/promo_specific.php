@@ -51,21 +51,6 @@
             
                 <?php } ?>
             </div>
-
-            <div class="row mt-2">
-                 <div class="col-6">
-                        <div class="stat-box">
-                            <div class="title">USAGE TODAY</div>
-                            <div class="value"></div>
-                        </div>
-                 </div>
-                  <div class="col-6">
-                        <div class="stat-box">
-                            <div class="title">PROMO REDEEMED</div>
-                            <div class="value"></div>
-                        </div>
-                  </div>         
-            </div>
          </div>
           
 

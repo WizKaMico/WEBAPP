@@ -12,7 +12,7 @@ $OwnerBookingDetails = $portCont->myOwnerTotalBookings($code);
 $OwnerBookingDetailsToday = $portCont->myOwnerTotalBookingsToday($code);
 $OwnerServiceCount = $portCont->myServiceList($code);
 $OwnerPromoCount = $portCont->myPromoListList($code);
-
+$OwnerEmployeeCount = $portCont->myEmployeeList($code);
 // $clientBookingDetailsList = myBookingsTodayList($code)
 if(!empty($_GET['bid'])){
     $bid = $_GET['bid'];
@@ -358,7 +358,7 @@ if(!empty($_GET['bid'])){
                                                 
                                                     $portCont->insertBookingCreatedByUser($sid, $booked_by, $car_model, $car_brand, $date_appointment, $time_appointment, $photoPath, $newpromoCode);
                                                     header('Location: home.php?view=SPECIFICSTORE&ccode='.$ccode);
-                                                
+                                                   
                                             } else {
                                                 // Handle file upload error
                                                 // Redirect or display an error message
@@ -366,7 +366,84 @@ if(!empty($_GET['bid'])){
                                         }
                                     }
                                     break;
+
+
+                                    case "addEmployee":
+                                        if (isset($_POST['addEmployee'])) {
+                                        $company_code = $code;
+                                        $emp_id = $_POST['emp_id']; 
+                                        $emp_name = $_POST['emp_name'];
+                                        $emp_designation = $_POST['emp_designation'];   
+                                          if(!empty($company_code) && !empty($emp_id) && !empty($emp_name) && !empty($emp_designation)){
+                                            $portCont->insertEmployee($company_code, $emp_id, $emp_name, $emp_designation);
+                                            header('Location: home.php?view=HOME&message=ADDED');
+                                         }
+                                        
+                                        }
+                                    break;
+
+
+                                    case "updateEmployee":
+                                        if (isset($_POST['updateEmployee'])) {
+                                        $emp_id = $_POST['emp_id']; 
+                                        $emp_name = $_POST['emp_name'];
+                                        $emp_designation = $_POST['emp_designation'];   
+                                          if(!empty($emp_id) && !empty($emp_name) && !empty($emp_designation)){
+                                            $portCont->updateEmployee($emp_id, $emp_name, $emp_designation);
+                                            header('Location: home.php?view=SPECIFICEEMPLOYEE&employee_id='.$emp_id.'&message=success');
+                                         }
+                                        
+                                        }
+                                    break;
+
+
+                                    case "serviceAcceptance":
+                                        if(isset($_POST['serviceAcceptance'])){
+                                            $bid = $_POST['bid']; 
+                                            $status = $_POST['status']; 
+
+                                            if(!empty($bid) && !empty($status)){
+                                                $portCont->updateAppointmentSetOwner($bid, $status);
+                                                header('Location: home.php?view=MYAPPOINTMENT&message=success');
+                                            }
+                                        }
+                                    break;
                                 
+                                    case "serviceConfirmation": 
+                                        if(isset($_POST['serviceConfirmation'])){
+
+                                            $bid = $_POST['bid']; 
+                                            $emp_id = $_POST['emp_id'];
+                                            $status = $_POST['status']; 
+                                            $estimated_minutes = $_POST['estimated_minutes'];
+
+                                            if(!empty($bid) && !empty($emp_id) && !empty($status) && !empty($estimated_minutes))
+                                            {   
+                                                $checker = $portCont->checkConfirmation($bid);
+                                                if(!empty($checker)){
+                                                    if($status == 'COMPLETED'){
+                                                        $stat = 'AVAIL';
+                                                        $portCont->updateEmployeeAfterCompletion($emp_id, $stat);
+                                                        $portCont->updateAppointmentSetOwner($bid, $status);   
+                                                        header('Location: home.php?view=MYAPPOINTMENT&message=completed');  
+                                                    }else{
+                                                        $stat = 'OCCUPIED';
+                                                        $portCont->updateEmployeeAfterCompletion($emp_id, $stat);
+                                                        $portCont->updateAppointmentSetOwnerAfterConfirmation($bid, $estimated_minutes);
+                                                        $portCont->updateAppointmentSetOwner($bid, $status);
+                                                        header('Location: home.php?view=MYAPPOINTMENT&message=inprogalready');  
+                                                    }
+                                                }else{
+                                                    $stat = 'OCCUPIED';
+                                                    $portCont->updateEmployeeAfterCompletion($emp_id, $stat);
+                                                    $portCont->updateAppointmentSetOwner($bid, $status);
+                                                    $portCont->addAppointmentSetOwnerAfterConfirmation($bid, $emp_id, $estimated_minutes);
+                                                    header('Location: home.php?view=MYAPPOINTMENT&message=success');
+                                                }
+                                            }
+
+                                        }
+                                    break;
 
 
 
