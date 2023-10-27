@@ -35,6 +35,15 @@
 
                             <div class="form-group basic">
                                 <div class="input-wrapper">
+                                    <label class="label" for="email1">TRACKING</label>
+                                    <input type="text" class="form-control" id="email1" name="tracking" value="<?php echo strtoupper( $appointmentList[$key]['tracking']); ?>" readonly="">
+                                    <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
                                     <label class="label" for="email1">STATUS</label>
                                     <select class="form-control" name="status" id="email1" require="">
                                         <option><?php echo $appointmentList[$key]['status']; ?> (CURRENT)</option>

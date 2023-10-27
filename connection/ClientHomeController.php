@@ -355,8 +355,9 @@ if(!empty($_GET['bid'])){
                                                 } else {
                                                     $newpromoCode = 'NOT AVAILABLE';
                                                 }
-                                                
-                                                    $portCont->insertBookingCreatedByUser($sid, $booked_by, $car_model, $car_brand, $date_appointment, $time_appointment, $photoPath, $newpromoCode);
+                                                    $tracking = rand(6666,9999).'-'.date('Ymd');
+                                                    $portCont->insertBookingCreatedByUser($sid, $tracking, $booked_by, $car_model, $car_brand, $date_appointment, $time_appointment, $photoPath, $newpromoCode);
+                                                    $portCont->insertBookingHistory($tracking);
                                                     header('Location: home.php?view=SPECIFICSTORE&ccode='.$ccode);
                                                    
                                             } else {
@@ -400,10 +401,12 @@ if(!empty($_GET['bid'])){
                                     case "serviceAcceptance":
                                         if(isset($_POST['serviceAcceptance'])){
                                             $bid = $_POST['bid']; 
+                                            $tracking = $_POST['tracking'];
                                             $status = $_POST['status']; 
 
-                                            if(!empty($bid) && !empty($status)){
+                                            if(!empty($bid) && !empty($status) && !empty($tracking)){
                                                 $portCont->updateAppointmentSetOwner($bid, $status);
+                                                $portCont->addTrackingHistory($tracking, $status);
                                                 header('Location: home.php?view=MYAPPOINTMENT&message=success');
                                             }
                                         }
@@ -415,9 +418,10 @@ if(!empty($_GET['bid'])){
                                             $bid = $_POST['bid']; 
                                             $emp_id = $_POST['emp_id'];
                                             $status = $_POST['status']; 
+                                            $tracking = $_POST['tracking'];
                                             $estimated_minutes = $_POST['estimated_minutes'];
 
-                                            if(!empty($bid) && !empty($emp_id) && !empty($status) && !empty($estimated_minutes))
+                                            if(!empty($bid) && !empty($emp_id) && !empty($status) && !empty($estimated_minutes) && !empty($tracking))
                                             {   
                                                 $checker = $portCont->checkConfirmation($bid);
                                                 if(!empty($checker)){
@@ -425,12 +429,14 @@ if(!empty($_GET['bid'])){
                                                         $stat = 'AVAIL';
                                                         $portCont->updateEmployeeAfterCompletion($emp_id, $stat);
                                                         $portCont->updateAppointmentSetOwner($bid, $status);   
+                                                        $portCont->addTrackingHistory($tracking, $status);
                                                         header('Location: home.php?view=MYAPPOINTMENT&message=completed');  
                                                     }else{
                                                         $stat = 'OCCUPIED';
                                                         $portCont->updateEmployeeAfterCompletion($emp_id, $stat);
                                                         $portCont->updateAppointmentSetOwnerAfterConfirmation($bid, $estimated_minutes);
                                                         $portCont->updateAppointmentSetOwner($bid, $status);
+                                                        $portCont->addTrackingHistory($tracking, $status);
                                                         header('Location: home.php?view=MYAPPOINTMENT&message=inprogalready');  
                                                     }
                                                 }else{
@@ -438,6 +444,7 @@ if(!empty($_GET['bid'])){
                                                     $portCont->updateEmployeeAfterCompletion($emp_id, $stat);
                                                     $portCont->updateAppointmentSetOwner($bid, $status);
                                                     $portCont->addAppointmentSetOwnerAfterConfirmation($bid, $emp_id, $estimated_minutes);
+                                                    $portCont->addTrackingHistory($tracking, $status);
                                                     header('Location: home.php?view=MYAPPOINTMENT&message=success');
                                                 }
                                             }
