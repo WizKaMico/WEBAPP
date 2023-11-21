@@ -673,13 +673,16 @@ class appController extends DBController
         return $userCredentials;
     }
 
-    function insertBookingCreatedByUser($sid, $booked_by, $car_model, $car_brand, $date_appointment, $time_appointment, $photoPath, $newpromoCode)
+    function insertBookingCreatedByUser($sid, $tracking, $booked_by, $car_model, $car_brand, $date_appointment, $time_appointment, $photoPath, $newpromoCode)
     {
-        $query = "INSERT INTO tbl_user_booking (sid, booked_by, car_model, car_brand, date_appointment, time_appointment, photo, promo_code, status, booking_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO tbl_user_booking (sid, tracking, booked_by, car_model, car_brand, date_appointment, time_appointment, photo, promo_code, status, booking_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $params = array(             
             array(
                 "param_type" => "i",
                 "param_value" => $sid
+            ),array(
+                "param_type" => "s",
+                "param_value" => $tracking
             ),array(
                 "param_type" => "i",
                 "param_value" => $booked_by
@@ -704,6 +707,46 @@ class appController extends DBController
             ),array(
                 "param_type" => "s",
                 "param_value" => 'PENDING'
+            ),array(
+                "param_type" => "s",
+                "param_value" => date('Y-m-d')
+            )
+        );
+
+        
+    
+        $this->insertDB($query, $params);
+    }
+
+    function insertBookingHistory($tracking) {
+
+        $query = "INSERT INTO tbl_booking_history (tracking, status, date_updated) VALUES (?, ?, ?)";
+        $params = array(             
+            array(
+                "param_type" => "s",
+                "param_value" => $tracking
+            ),array(
+                "param_type" => "s",
+                "param_value" => 'PENDING'
+            ),array(
+                "param_type" => "s",
+                "param_value" => date('Y-m-d')
+            )
+        );
+    
+        $this->insertDB($query, $params);
+    }
+
+    function addTrackingHistory($tracking, $status)
+    {
+        $query = "INSERT INTO tbl_booking_history (tracking, status, date_updated) VALUES (?, ?, ?)";
+        $params = array(             
+            array(
+                "param_type" => "s",
+                "param_value" => $tracking
+            ),array(
+                "param_type" => "s",
+                "param_value" => $status
             ),array(
                 "param_type" => "s",
                 "param_value" => date('Y-m-d')
@@ -795,6 +838,21 @@ class appController extends DBController
             array(
                 "param_type" => "i",
                 "param_value" => $code
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function mybookingHistoryTrack($tracking)
+    {
+        $query = "SELECT *,TBH.status as TSTAT  FROM tbl_booking_history TBH LEFT JOIN tbl_user_booking TUB ON TBH.tracking = TUB.tracking LEFT JOIN tbl_user_store_services TUSS ON TUB.sid = TUSS.sid WHERE TBH.tracking = ?";
+ 
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $tracking
             )
         );
         

@@ -62,6 +62,8 @@
     <?php include('route/information_image.php'); ?>
     <?php } else if($_GET['view'] == 'MYBOOKING') { ?>
     <?php include('route/my_booking.php'); ?>
+    <?php } else if($_GET['view'] == 'BOOKINGHISTORY') { ?>
+    <?php include('route/my_booking_history.php'); ?>
     <?php } else if($_GET['view'] == 'MAPSPECIFICROUTE') { ?>
     <?php include('route/map_route.php'); ?>
     <?php } else if($_GET['view'] == 'MYAPPOINTMENT') { ?>

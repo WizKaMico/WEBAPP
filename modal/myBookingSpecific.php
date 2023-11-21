@@ -2,7 +2,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">BOOKED SERVICE : <?php echo strtoupper($bookingList[$key]['servicename']); ?></h5>
+                        <h5 class="modal-title">BOOKED SERVICE : <?php echo strtoupper($bookingList[$key]['servicename']); ?> | TRACK :  <?php echo $bookingList[$key]['tracking']; ?></h5>
                     </div>
                     <div class="modal-body">
                         <div class="action-sheet-content">
@@ -34,6 +34,10 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                    <a href="home.php?view=MAPSPECIFICROUTE&bid=<?php echo $bookingList[$key]['bid']; ?>" class="btn btn-primary btn-block btn-lg">VIEW APPOINTMENT LOCATION</a>
+                                </div>
+                                <hr />
+                                <div class="input-wrapper">
+                                   <a href="home.php?view=BOOKINGHISTORY&tracking=<?php echo $bookingList[$key]['tracking']; ?>" class="btn btn-primary btn-block btn-lg">HISTORY</a>
                                 </div>
                             </div>
                         </div>
