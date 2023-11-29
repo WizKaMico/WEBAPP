@@ -5,6 +5,7 @@ $portCont = new appController();
 
 $userSession = $portCont->getUserDetails($session_id);
 $code = $userSession[0]['code'];
+$myCompany = $portCont->getCompanyDetails($code);
 $userDetails = $portCont->getUserCompleteDetails($code);
 $clientBookingDetails =  $portCont->myTotalBookings($code);
 $clientBookingDetailsToday = $portCont->myBookingsToday($code);
@@ -17,6 +18,16 @@ $OwnerEmployeeCount = $portCont->myEmployeeList($code);
 if(!empty($_GET['bid'])){
     $bid = $_GET['bid'];
     $clientBookingDetailsToday = $portCont->myBookingsListSpecific($bid);
+}
+
+
+if(!empty($_GET['tracking'])){
+    $tracking = $_GET['tracking'];
+    if($userSession[0]['designation'] == 3) {
+    $checkInfoDetails = $portCont->myBookingsListSpecificForMessageClient($tracking);
+    } else {
+    $checkInfoDetailsPartner = $portCont->myBookingsListSpecificForMessageParter($tracking);    
+    }
 }
 
   if (!empty($_GET["action"])) {
@@ -144,6 +155,49 @@ if(!empty($_GET['bid'])){
                 
             }
             break;
+
+            case "uploadmycompanyphoto":
+                if(isset($_POST['proceed'])){
+                    $company_code = $code;
+                    $photoName = $_FILES['photo']['name'];
+                    $photoTmpName = $_FILES['photo']['tmp_name'];
+
+                    
+                    if(!empty($photoName) && !empty($company_code)){
+                        $checkifThisHasImage = $portCont->checkCompanyLogo($company_code);
+
+                        if(!empty($checkifThisHasImage)){
+                            $uploadDir = 'companyDetails' . strtolower($category); // Use '.' for string concatenation in PHP
+
+                            if (!file_exists($uploadDir)) {
+                                mkdir($uploadDir, 0777, true);
+                            }
+                            
+                            $photoPath = $uploadDir . '/' . $photoName;
+                            
+                            // Move the uploaded file to the directory
+                            move_uploaded_file($photoTmpName, $photoPath);
+        
+                            $portCont->updateCompanyLogo($company_code, $photoPath);
+                            header('Location: home.php?view=MYCOMPANY');
+                        }else{
+                            $uploadDir = 'companyDetails' . strtolower($category); // Use '.' for string concatenation in PHP
+
+                            if (!file_exists($uploadDir)) {
+                                mkdir($uploadDir, 0777, true);
+                            }
+                            
+                            $photoPath = $uploadDir . '/' . $photoName;
+                            
+                            // Move the uploaded file to the directory
+                            move_uploaded_file($photoTmpName, $photoPath);
+        
+                            $portCont->uploadCompanyLogo($company_code, $photoPath);
+                            header('Location: home.php?view=MYCOMPANY');
+                        }
+                    }
+                }
+                break;
 
 
             case "fullyRegisterAccountImage":
@@ -328,6 +382,7 @@ if(!empty($_GET['bid'])){
                                     if (isset($_POST['book'])) {
                                         $sid = $_POST['sid'];
                                         $ccode = $_POST['ccode'];
+                                        $price = $_POST['price'];
                                         $booked_by = $userSession[0]['code'];
                                         $car_model = $_POST['car_model'];
                                         $car_brand = $_POST['car_brand'];
@@ -337,7 +392,7 @@ if(!empty($_GET['bid'])){
                                         $photoTmpName = $_FILES['photo']['tmp_name'];
                                         $promo_code = $_POST['promo_code'];
                                 
-                                        if (!empty($sid) && !empty($booked_by) && !empty($car_model)  && !empty($car_brand) && !empty($date_appointment) && !empty($time_appointment) && !empty($photoName)) {
+                                        if (!empty($sid) && !empty($booked_by) && !empty($price) && !empty($car_model)  && !empty($car_brand) && !empty($date_appointment) && !empty($time_appointment) && !empty($photoName)) {
                                 
                                             $uploadDir = 'UserClientCarDetails/' . strtolower($booked_by);
                                 
@@ -356,7 +411,7 @@ if(!empty($_GET['bid'])){
                                                     $newpromoCode = 'NOT AVAILABLE';
                                                 }
                                                     $tracking = rand(6666,9999).'-'.date('Ymd');
-                                                    $portCont->insertBookingCreatedByUser($sid, $tracking, $booked_by, $car_model, $car_brand, $date_appointment, $time_appointment, $photoPath, $newpromoCode);
+                                                    $portCont->insertBookingCreatedByUser($sid, $tracking, $booked_by, $car_model, $car_brand, $price, $date_appointment, $time_appointment, $photoPath, $newpromoCode);
                                                     $portCont->insertBookingHistory($tracking);
                                                     header('Location: home.php?view=SPECIFICSTORE&ccode='.$ccode);
                                                    
@@ -451,6 +506,61 @@ if(!empty($_GET['bid'])){
 
                                         }
                                     break;
+
+                                    case "chatServiceBookSpecific":
+                                        if(isset($_POST['submit'])){
+                                            $tracking = $_POST['tracking'];
+                                            $sid = $_POST['sid'];
+                                            $message_by = $_POST['message_by'];
+                                            $role = $_POST['role'];
+                                            $message = $_POST['message'];
+
+                                            if(!empty($tracking) && !empty($sid)  && !empty($message_by) && !empty($role) && !empty($message)){
+                                                $portCont->addClientMessage($tracking, $sid, $message_by, $role, $message);
+                                                header('Location: home.php?view=CHAT&tracking='.$tracking.'&message=success');
+                                            }else{
+                                                header('Location: home.php?view=CHAT&tracking='.$tracking.'&message=error');
+                                            }
+                                        }
+                                        break;
+
+
+                                    case "addrating":
+                                        if(isset($_POST['ratesubmit'])){
+                                            $tracking = $_POST['tracking'];
+                                            $sid = $_POST['sid'];
+                                            $rate_by = $_POST['rate_by'];
+                                            $rate = $_POST['rate'];
+                                            $comment = $_POST['comment'];   
+
+                                            if(!empty($tracking) && !empty($sid) && !empty($rate_by) && !empty($rate) && !empty($comment))
+                                            {
+                                                $portCont->addClientRating($tracking, $sid, $rate_by, $rate, $comment);
+                                                header('Location: home.php?view=RATE&tracking='.$tracking.'&message=success');
+                                            }
+                                            else
+                                            {
+                                                header('Location: home.php?view=RATE&tracking='.$tracking.'&message=error');
+                                            }
+
+                                        }
+                                        break;
+
+                                    case "addPaymentService":
+                                        if(isset($_POST['addServiceAmount'])){
+                                            $vehicle_type = $_POST['vehicle_type'];
+                                            $price = $_POST['price'];
+                                            $service_id = $_POST['service_id'];
+
+                                            if(!empty($vehicle_type) && !empty($price) && !empty($service_id))
+                                            {
+                                                $portCont->addServiceAmountPricing($vehicle_type, $price, $service_id);
+                                                header('Location: home.php?view=SPECIFICSERVICE&service_id='.$service_id.'&message=success');
+                                            }
+                                            
+                                        }
+                                        break;
+
 
 
 

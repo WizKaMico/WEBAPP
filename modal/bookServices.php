@@ -8,7 +8,26 @@
                         <div class="action-sheet-content">
                             <form  method="POST" enctype="multipart/form-data" action="home.php?view=HOME&action=bookNow">
                             <input type="hidden" name="sid" class="form-control" id="email1" value="<?php echo $company[$key]['sid']; ?>">
-                            <input type="hidden" name="ccode" class="form-control" id="email1" value="<?php echo $_GET['ccode']; ?>">  
+                            <input type="hidden" name="ccode" class="form-control" id="email1" value="<?php echo $_GET['ccode']; ?>"> 
+                            
+                            <?php  
+                                    $service_id = $company[$key]['sid'];
+                                      $serviceSpecificRating = $portCont->showServiceAmountPrice($service_id);
+                                        if(!empty($serviceSpecificRating)){ 
+                                         
+                            ?>
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <label class="label" for="email1">CAR TYPE</label>
+                                    <select name="price" class="form-control">
+                                    <?php foreach ($serviceSpecificRating as $key => $value) {  ?>
+                                    <option value="<?php echo $serviceSpecificRating[$key]['price']; ?>"><?php echo $serviceSpecificRating[$key]['vehicle_type']; ?> | <?php echo $serviceSpecificRating[$key]['price']; ?></option>
+                                    <?php } ?>
+                                    <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
+                                </div>
+                            </div>
+                            <?php } ?>
+
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">CAR MODEL</label>
@@ -65,6 +84,10 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                    <button type="submit" name="book" class="btn btn-primary btn-block btn-lg">BOOK</button>
+                                </div>
+                                <hr />
+                                <div class="input-wrapper">
+                                   <a href="home.php?view=SERVICERATING&sid=<?php echo $company[$key]['sid']; ?>" class="btn btn-primary btn-block btn-lg">RATINGS</a>
                                 </div>
                             </div>
                             

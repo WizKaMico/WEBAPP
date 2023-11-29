@@ -39,6 +39,16 @@
                                 <div class="input-wrapper">
                                    <a href="home.php?view=BOOKINGHISTORY&tracking=<?php echo $bookingList[$key]['tracking']; ?>" class="btn btn-primary btn-block btn-lg">HISTORY</a>
                                 </div>
+                                <hr />
+                                <div class="input-wrapper">
+                                   <a href="home.php?view=CHAT&tracking=<?php echo $bookingList[$key]['tracking']; ?>" class="btn btn-primary btn-block btn-lg">CHAT</a>
+                                </div>
+                                <hr />
+                                <?php if($bookingList[$key]['status'] == 'COMPLETED') { ?>
+                                <div class="input-wrapper">
+                                   <a href="home.php?view=RATE&tracking=<?php echo $bookingList[$key]['tracking']; ?>" class="btn btn-primary btn-block btn-lg">RATE SERVICE</a>
+                                </div>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>

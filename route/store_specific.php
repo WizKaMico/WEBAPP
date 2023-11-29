@@ -26,10 +26,16 @@
        
 
         <div class="section">
+            <br />
+        <?php 
+              $ccode = $_GET['ccode'];
+                 $companyInfo = $portCont->getCompanyClientViewServicesCheck(($ccode));
+            ?>
+            <h5>COMPANY : <?php echo $companyInfo[0]['company']; ?></h5>
             <div class="row mt-2">
-               <?php 
-                   $ccode = $_GET['ccode'];
-                    $company = $portCont->getCompanyClientViewServices($ccode); 
+               <?php
+                 $ccode = $_GET['ccode'];
+                    $company = $portCont->getCompanyInformationOfASpecificService($ccode); 
                     if(!empty($company)){
                     foreach ($company as $key => $value) {
                 ?>   

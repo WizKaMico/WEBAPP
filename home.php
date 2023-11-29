@@ -17,7 +17,7 @@
     <link rel="shortcut icon" href="assets/img/favicon.png"> -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
-
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
 </head>
 
 <body>
@@ -64,14 +64,22 @@
     <?php include('route/my_booking.php'); ?>
     <?php } else if($_GET['view'] == 'BOOKINGHISTORY') { ?>
     <?php include('route/my_booking_history.php'); ?>
+    <?php } else if($_GET['view'] == 'CHAT') { ?>
+    <?php include('route/my_chat.php'); ?>
     <?php } else if($_GET['view'] == 'MAPSPECIFICROUTE') { ?>
     <?php include('route/map_route.php'); ?>
     <?php } else if($_GET['view'] == 'MYAPPOINTMENT') { ?>
     <?php include('route/my_appointment.php'); ?>
     <?php } else if($_GET['view'] == 'SETTING') { ?>
     <?php include('route/setting.php'); ?>
+    <?php } else if($_GET['view'] == 'RATE') { ?>
+    <?php include('route/my_rate.php'); ?>
+    <?php } else if($_GET['view'] == 'SERVICERATING') { ?>
+    <?php include('route/service_rating.php'); ?>    
     <?php } else if($_GET['view'] == 'SPECIFICEEMPLOYEE') { ?>
     <?php include('route/company_employee_specific.php'); ?>   
+    <?php } else if($_GET['view'] == 'MYCOMPANY') { ?>
+    <?php include('route/company_information.php'); ?>    
     <?php } else { ?>
 
         
@@ -115,6 +123,16 @@
                                 <div class="in">
                                     My Bookings (Appointment)
                                    
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="home.php?view=MYCOMPANY" class="item">
+                                <div class="icon-box bg-primary">
+                                    <ion-icon name="pie-chart-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                   Company
                                 </div>
                             </a>
                         </li>
@@ -189,6 +207,28 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script src="assets/js/map.js"></script>
+     <!-- Ensure you've included jQuery -->
+    
+    <script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+            // get input field and add 'keyup' event listener
+            let searchInput = document.querySelector('.search-input');
+            searchInput.addEventListener('keyup', search);
+
+            function search(e) {
+                let searchTerm = e.target.value.toLowerCase();
+                let titles = document.querySelectorAll('.companyContainer .title');
+
+                titles.forEach((title) => {
+                    let tit = title.textContent.toLowerCase();
+                    // if the search term is not in the title, hide the title; otherwise, show it.
+                    tit.includes(searchTerm) ? title.parentElement.parentElement.style.display = 'block' : title.parentElement.parentElement.style.display = 'none';
+                });
+            }
+        });
+    </script>
+   
 
 </body>
 </html>

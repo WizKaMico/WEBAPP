@@ -103,6 +103,10 @@
                                 <div class="input-wrapper">
                                    <button type="submit" name="serviceConfirmation" class="btn btn-primary btn-block btn-lg">UPDATE APPOINTMENT</button>
                                 </div>
+                                <hr />
+                                <div class="input-wrapper">
+                                   <a href="home.php?view=CHAT&tracking=<?php echo $appointmentList[$key]['tracking']; ?>" class="btn btn-primary btn-block btn-lg">CHAT</a>
+                                </div>
                             </div>
 
                          </form>
