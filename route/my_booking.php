@@ -88,6 +88,7 @@
                                                 <div class="text-muted">⏱ ETA :  <?php echo  $eta; ?></div>
                                                 <div class="text-muted">👨‍🔧 ASSIGN :  <?php echo $assign; ?></div>
                                                 <div class="text-muted">🔎 <?php echo $bookingList[$key]['tracking']; ?></div>
+                                                <div class="text-muted">💰 TO PAY : <?php echo $bookingList[$key]['price']; ?></div>
                                                 
                                             </div>
                                             <?php if ($isToday) { ?>

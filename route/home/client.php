@@ -46,20 +46,30 @@
             </div>
         </div>
 
-        <div class="section">
-            
-            <div class="row mt-2">
-                <?php 
-                    $company = $portCont->getCompanyServicesClientView(); 
-                    if(!empty($company)){
+        <div class="section" style="margin-top:20px;">
+
+        <div class="wide-block pt-2 pb-2">
+            <form class="search-form">
+                <div class="form-group searchbox">
+                    <input type="text" class="form-control search-input">
+                    <i class="input-icon">
+                        <ion-icon name="search-outline"></ion-icon>
+                    </i>
+                </div>
+            </form>
+        </div>
+
+        <div class="row mt-2 companyContainer">
+            <?php 
+                $company = $portCont->getCompanyServicesClientView(); 
+                if(!empty($company)){
                     foreach ($company as $key => $value) {
-                ?>   
-             
-                <div class="col-6" style="margin-top:10px;">
+            ?>   
+            <div class="col-6 filtered" style="margin-top:10px;">
                 <a href="home.php?view=SPECIFICSTORE&ccode=<?php echo $company[$key]['code']; ?>">
                     <div class="stat-box">
                         <?php if(!empty($company[$key]['image'])){ ?>
-                        <img src="./assets/img/company_logo.png" alt="image" class="imaged w-100" style="width:100%;">     
+                        <img src="<?php echo $company[$key]['image']; ?>" alt="image" class="imaged w-100" style="width:100%;">     
                         <?php } else { ?>
                         <img src="./assets/img/company_logo.png" alt="image" class="imaged w-100" style="width:100%;">
                         <?php } ?>
@@ -67,10 +77,9 @@
                         <div class="value"></div>
                     </div>
                 </a>
-                </div>
-               
-                <?php } } ?>
             </div>
+            <?php } } ?>
+        </div>
 
           
         </div>

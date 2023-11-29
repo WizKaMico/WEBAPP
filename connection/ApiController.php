@@ -641,10 +641,26 @@ class appController extends DBController
         return $productCategoryProductResult;    
     }
 
-
-    function getCompanyClientViewServices($ccode)
+    function getCompanyInformationOfASpecificService($ccode)
     {
         $query = "SELECT * FROM tbl_user_store_services TUIS LEFT JOIN tbl_user_promo TUP ON TUIS.sid = TUP.servicepromo  WHERE TUIS.code = ?";
+ 
+        $params = array(
+            
+            array(
+                "param_type" => "i",
+                "param_value" => $ccode
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials; 
+    }
+
+
+    function getCompanyClientViewServicesCheck($ccode)
+    {
+        $query = "SELECT * FROM tbl_user_information_store TUI WHERE TUI.code = ?";
  
         $params = array(
             
@@ -673,9 +689,9 @@ class appController extends DBController
         return $userCredentials;
     }
 
-    function insertBookingCreatedByUser($sid, $tracking, $booked_by, $car_model, $car_brand, $date_appointment, $time_appointment, $photoPath, $newpromoCode)
+    function insertBookingCreatedByUser($sid, $tracking, $booked_by, $car_model, $car_brand, $price, $date_appointment, $time_appointment, $photoPath, $newpromoCode)
     {
-        $query = "INSERT INTO tbl_user_booking (sid, tracking, booked_by, car_model, car_brand, date_appointment, time_appointment, photo, promo_code, status, booking_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO tbl_user_booking (sid, tracking, booked_by, car_model, car_brand, price, date_appointment, time_appointment, photo, promo_code, status, booking_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $params = array(             
             array(
                 "param_type" => "i",
@@ -692,6 +708,9 @@ class appController extends DBController
             ),array(
                 "param_type" => "s",
                 "param_value" => $car_brand
+            ),array(
+                "param_type" => "s",
+                "param_value" => $price
             ),array(
                 "param_type" => "s",
                 "param_value" => $date_appointment
@@ -912,6 +931,38 @@ class appController extends DBController
         return $userCredentials;
     }
 
+    function myBookingsListSpecificForMessageClient($tracking)
+    {
+        $query = "SELECT * FROM tbl_user_booking TUB LEFT JOIN tbl_users TU ON TUB.booked_by = TU.code WHERE TUB.tracking = ?";
+ 
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $tracking
+            )
+        );
+        
+        $userBookingForMessage = $this->getDBResult($query, $params);
+        return $userBookingForMessage;
+    }
+
+
+    function myBookingsListSpecificForMessageParter($tracking)
+    {
+        $query = "SELECT * FROM tbl_user_booking TUB LEFT JOIN tbl_user_store_services TUSS ON TUB.sid = TUSS.sid LEFT JOIN tbl_users TU ON TUSS.code = TU.code WHERE TUB.tracking = ?";
+ 
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $tracking
+            )
+        );
+        
+        $userBookingForMessage = $this->getDBResult($query, $params);
+        return $userBookingForMessage;
+    }
+
+
     function myAppointmentList($code){
         $query = "SELECT * FROM tbl_user_booking TUB LEFT JOIN tbl_user_store_services TUSS ON TUB.sid = TUSS.sid LEFT JOIN tbl_user_information_store TUIS ON TUSS.code = TUIS.code LEFT JOIN tbl_user_information TUI ON TUB.booked_by = TUI.code WHERE TUSS.code = ?";
  
@@ -1064,6 +1115,166 @@ class appController extends DBController
         );
     
         $this->insertDB($query, $params);
+    }
+
+    function addClientMessage($tracking, $sid, $message_by, $role, $message)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $query = "INSERT INTO tbl_user_message (tracking, sid, message_by, role, message, date_send) VALUES (?,?,?,?,?,?)";
+        $params = array(             
+            array(
+                "param_type" => "s",
+                "param_value" => $tracking
+            ),array(
+                "param_type" => "i",
+                "param_value" => $sid
+            ),array(
+                "param_type" => "i",
+                "param_value" => $message_by
+            ),array(
+                "param_type" => "i",
+                "param_value" => $role
+            ),array(
+                "param_type" => "s",
+                "param_value" => $message
+            ),array(
+                "param_type" => "s",
+                "param_value" => date('Y-m-d')
+            )
+        );
+    
+        $this->insertDB($query, $params);
+    }
+
+    function addClientRating($tracking, $sid, $rate_by, $rate, $comment)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $query = "INSERT INTO tbl_service_rating (tracking, sid, rate_by, rate, comment, date) VALUES (?,?,?,?,?,?)";
+        $params = array(             
+            array(
+                "param_type" => "s",
+                "param_value" => $tracking
+            ),array(
+                "param_type" => "i",
+                "param_value" => $sid
+            ),array(
+                "param_type" => "i",
+                "param_value" => $rate_by
+            ),array(
+                "param_type" => "i",
+                "param_value" => $rate
+            ),array(
+                "param_type" => "s",
+                "param_value" => $comment
+            ),array(
+                "param_type" => "s",
+                "param_value" => date('Y-m-d')
+            )
+        );
+    
+        $this->insertDB($query, $params);
+    }
+
+    function getCompanyDetails($code)
+    {
+        $query = "SELECT * FROM tbl_user_information_store TSR WHERE TSR.code = ?";
+
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            )
+        );
+        
+        $companyOverall = $this->getDBResult($query, $params);
+        return $companyOverall;    
+    }
+
+    function uploadCompanyLogo($company_code, $photoPath)
+    {
+        $query = "UPDATE tbl_user_information_store SET image = ? WHERE code = ?";
+
+        $params = array(
+            
+            array(
+                "param_type" => "s",
+                "param_value" => $photoPath 
+            ), array(
+                "param_type" => "i",
+                "param_value" => $company_code 
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function updateCompanyLogo($company_code, $photoPath)
+    {
+        $query = "UPDATE tbl_user_information_store SET image = ? WHERE code = ?";
+
+        $params = array(
+            
+            array(
+                "param_type" => "s",
+                "param_value" => $photoPath 
+            ), array(
+                "param_type" => "i",
+                "param_value" => $company_code 
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+
+    function getRatingForServices($sid)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $query = "SELECT * FROM tbl_service_rating TSR LEFT JOIN tbl_users TU ON TSR.rate_by = TU.code WHERE TSR.sid = ?";
+
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $sid
+            )
+        );
+        
+        $ratingOverall = $this->getDBResult($query, $params);
+        return $ratingOverall;    
+    }
+
+
+    function getConversation($tracking)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $query = "SELECT * FROM tbl_user_message TUM LEFT JOIN tbl_users TU ON TUM.message_by = TU.code WHERE TUM.tracking = ?";
+
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $tracking
+            )
+        );
+        
+        $conversationOverall = $this->getDBResult($query, $params);
+        return $conversationOverall;    
+    }
+
+    function checkCompanyLogo($code)
+    {
+        $query = "SELECT * FROM tbl_user_information_store TSR WHERE TSR.code = ? AND TSR.image IS NOT NULL";
+
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            )
+        );
+        
+        $companyOverall = $this->getDBResult($query, $params);
+        return $companyOverall;    
     }
 
     function myEmployeeList($code)
@@ -1312,6 +1523,39 @@ class appController extends DBController
             )
         );
         
+        $TotalEmployeeResult = $this->getDBResult($query, $params);
+        return $TotalEmployeeResult;   
+    }
+
+    function addServiceAmountPricing($vehicle_type, $price, $service_id)
+    {
+        $query = "INSERT INTO tbl_store_service_pricing (vehicle_type, price, service_id) VALUES (?,?,?)";
+        $params = array(             
+            array(
+                "param_type" => "s",
+                "param_value" => $vehicle_type
+            ),array(
+                "param_type" => "i",
+                "param_value" => $price
+            ),array(
+                "param_type" => "i",
+                "param_value" => $service_id
+            )
+        );
+    
+        $this->insertDB($query, $params);
+    }
+
+    function showServiceAmountPrice($service_id)
+    {
+        $query = "SELECT * FROM  tbl_store_service_pricing WHERE service_id = ?";
+        $params = array(             
+            array(
+                "param_type" => "i",
+                "param_value" => $service_id
+            )
+        );
+    
         $TotalEmployeeResult = $this->getDBResult($query, $params);
         return $TotalEmployeeResult;   
     }

@@ -86,6 +86,7 @@
                                                 <div class="text-muted">📍 STATUS :  <?php echo $appointmentList[$key]['status']; ?></div>
                                                 <div class="text-muted">⏱ ETA :  <?php echo  $eta; ?></div>
                                                 <div class="text-muted">👨‍🔧 ASSIGN :  <?php echo $assign; ?></div>
+                                                <div class="text-muted">💰 TO PAY :  <?php echo $appointmentList[$key]['price']; ?></div>
                                             </div>
                                             <?php if ($isToday) { ?>
                                                 <span class="badge badge-primary">today</span>
