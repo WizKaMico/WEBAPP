@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 29, 2023 at 04:51 AM
+-- Generation Time: Dec 08, 2023 at 09:03 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 5.6.40
 
@@ -121,6 +121,26 @@ INSERT INTO `tbl_company_employee` (`eid`, `company_code`, `emp_id`, `emp_name`,
 (4, 9777, '20231014-7849', 'John Paul', 'Chief Mechanic', '2023-10-14', 'AVAIL'),
 (5, 9777, '20231014-6793', 'Zyke Zyke', 'Chief Mechanic IV', '2023-10-14', 'AVAIL'),
 (6, 9603, '20231027-8606', 'Pablo Escobar', 'Chief Mechanic IIII', '2023-10-27', 'OCCUPIED');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_company_rental_setting`
+--
+
+CREATE TABLE `tbl_company_rental_setting` (
+  `raid` int(11) NOT NULL,
+  `amount` int(50) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `date_created` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_company_rental_setting`
+--
+
+INSERT INTO `tbl_company_rental_setting` (`raid`, `amount`, `status`, `date_created`) VALUES
+(1, 300, 'ACTIVE', '2023-12-09');
 
 -- --------------------------------------------------------
 
@@ -415,6 +435,28 @@ INSERT INTO `tbl_user_message` (`meid`, `sid`, `tracking`, `message_by`, `role`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_user_monthly_payment_history`
+--
+
+CREATE TABLE `tbl_user_monthly_payment_history` (
+  `rpid` int(11) NOT NULL,
+  `code` int(50) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `transaction_id` varchar(250) NOT NULL,
+  `amount` int(100) NOT NULL,
+  `date_created` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_user_monthly_payment_history`
+--
+
+INSERT INTO `tbl_user_monthly_payment_history` (`rpid`, `code`, `status`, `transaction_id`, `amount`, `date_created`) VALUES
+(1, 8990, 'true', '97S48705TM388221P', 300, '2023-12-09');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_user_promo`
 --
 
@@ -523,7 +565,8 @@ INSERT INTO `tbl_user_security` (`sid`, `email`, `code`, `status`, `date_created
 (58, 'revcoreitsolution@gmail.com', 7609, 'USED', '2023-11-28'),
 (59, 'gmfacistol@outlook.com', 7331, 'USED', '2023-11-28'),
 (60, 'revcoreitsolution@gmail.com', 8137, 'USED', '2023-11-28'),
-(61, 'gmfacistol@outlook.com', 7524, 'USED', '2023-11-28');
+(61, 'gmfacistol@outlook.com', 7524, 'USED', '2023-11-28'),
+(62, 'gmfacistol@outlook.com', 9325, 'USED', '2023-12-09');
 
 -- --------------------------------------------------------
 
@@ -583,6 +626,12 @@ ALTER TABLE `tbl_booking_history`
 --
 ALTER TABLE `tbl_company_employee`
   ADD PRIMARY KEY (`eid`);
+
+--
+-- Indexes for table `tbl_company_rental_setting`
+--
+ALTER TABLE `tbl_company_rental_setting`
+  ADD PRIMARY KEY (`raid`);
 
 --
 -- Indexes for table `tbl_information_image`
@@ -645,6 +694,12 @@ ALTER TABLE `tbl_user_message`
   ADD PRIMARY KEY (`meid`);
 
 --
+-- Indexes for table `tbl_user_monthly_payment_history`
+--
+ALTER TABLE `tbl_user_monthly_payment_history`
+  ADD PRIMARY KEY (`rpid`);
+
+--
 -- Indexes for table `tbl_user_promo`
 --
 ALTER TABLE `tbl_user_promo`
@@ -689,6 +744,12 @@ ALTER TABLE `tbl_booking_history`
 --
 ALTER TABLE `tbl_company_employee`
   MODIFY `eid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tbl_company_rental_setting`
+--
+ALTER TABLE `tbl_company_rental_setting`
+  MODIFY `raid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_information_image`
@@ -751,6 +812,12 @@ ALTER TABLE `tbl_user_message`
   MODIFY `meid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `tbl_user_monthly_payment_history`
+--
+ALTER TABLE `tbl_user_monthly_payment_history`
+  MODIFY `rpid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `tbl_user_promo`
 --
 ALTER TABLE `tbl_user_promo`
@@ -760,7 +827,7 @@ ALTER TABLE `tbl_user_promo`
 -- AUTO_INCREMENT for table `tbl_user_security`
 --
 ALTER TABLE `tbl_user_security`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `tbl_user_store_services`
