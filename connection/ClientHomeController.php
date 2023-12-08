@@ -14,6 +14,10 @@ $OwnerBookingDetailsToday = $portCont->myOwnerTotalBookingsToday($code);
 $OwnerServiceCount = $portCont->myServiceList($code);
 $OwnerPromoCount = $portCont->myPromoListList($code);
 $OwnerEmployeeCount = $portCont->myEmployeeList($code);
+$checkifpaymentwasmadethismonth = $portCont->checkPaymentForthisMonth($code);
+
+
+$myRentalSetting = $portCont->myRentPaymentSetting();
 // $clientBookingDetailsList = myBookingsTodayList($code)
 if(!empty($_GET['bid'])){
     $bid = $_GET['bid'];
@@ -558,6 +562,17 @@ if(!empty($_GET['tracking'])){
                                                 header('Location: home.php?view=SPECIFICSERVICE&service_id='.$service_id.'&message=success');
                                             }
                                             
+                                        }
+                                        break;
+
+                                    case "paypalTrans":
+                                        if(isset($_GET['success'])){
+                                            $status = $_GET['success'];
+                                            $code = $_GET['code'];
+                                            $amount = $_GET['amount'];
+                                            $transaction_id = $_GET['transaction_id'];
+                                            $portCont->paypalPayment($status,$code,$amount,$transaction_id);
+                                            header('Location: home.php?view=MYCOMPANY&message=success');
                                         }
                                         break;
 

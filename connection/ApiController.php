@@ -1560,5 +1560,71 @@ class appController extends DBController
         return $TotalEmployeeResult;   
     }
 
+    function myRentPaymentSetting()
+    {
+        $query = "SELECT * FROM  tbl_company_rental_setting";
+       
+        $RentalTotal = $this->getDBResult($query);
+        return $RentalTotal;   
+    }
+
+    function paypalPayment($status,$code,$amount,$transaction_id)
+    {
+        $query = "INSERT INTO tbl_user_monthly_payment_history (code, status, transaction_id, amount, date_created) VALUES (?,?,?,?,CURDATE())";
+        $params = array(             
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            ),array(
+                "param_type" => "s",
+                "param_value" => $status
+            ),array(
+                "param_type" => "s",
+                "param_value" => $transaction_id
+            ),array(
+                "param_type" => "i",
+                "param_value" => $amount
+            )
+        );
+    
+        $this->insertDB($query, $params);
+    }
+
+    function checkPaymentForthisMonth($code)
+    {
+        $query = "SELECT *
+        FROM tbl_user_monthly_payment_history
+        WHERE code = ? 
+        AND status = 'true'
+        AND MONTH(date_created) = MONTH(NOW())
+        AND YEAR(date_created) = YEAR(NOW())";
+        $params = array(             
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            )
+        );
+    
+        $TotalEmployeeResult = $this->getDBResult($query, $params);
+        return $TotalEmployeeResult; 
+    }
+
+    function myHistoryOfPayments($code)
+    {
+        $query = "SELECT *
+        FROM tbl_user_monthly_payment_history
+        WHERE code = ? 
+        AND status = 'true'";
+        $params = array(             
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            )
+        );
+    
+        $TotalEmployeeResult = $this->getDBResult($query, $params);
+        return $TotalEmployeeResult; 
+    }
+
 
 }

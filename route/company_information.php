@@ -20,6 +20,11 @@
                                    INVOICE
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#history" role="tab">
+                                   PAYMENT
+                                </a>
+                            </li>
                         </ul>
                         <div class="tab-content mt-2">
                             <div class="tab-pane fade show active" id="home" role="tabpanel">
@@ -92,9 +97,105 @@
                                 </form>
                             </div>
                             <div class="tab-pane fade" id="invoice" role="tabpanel">
+                            <?php if(!empty($checkifpaymentwasmadethismonth)) { ?>
+                            <h5 style="text-align:center;">NEXT BILL WILL BE GENERATED ON <?php $currentDate = $checkifpaymentwasmadethismonth[0]['date_created'];
+
+                            // Get the next month's date
+                            $nextMonth = date('Y-m-d', strtotime('+1 month', strtotime($currentDate)));
+
+                            echo $nextMonth; ?></h5>
+                            <?php } else { ?>
                             <iframe src="invoice/index.php?code=<?php echo strtoupper($myCompany[0]['code']); ?>" style="width:100%; height:500px;"></iframe>         
+                            <center>
+                            <div id="paypal-button-container" style="max-width:300px;">
+                            </center>    
+                            <?php } ?>
+                            
+                            <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=PHP&disable-funding=card&intent=capture"></script>
 
 
+                            <script>
+                                // Render the PayPal button into #paypal-button-container
+                                paypal.Buttons({
+                                    style: {
+                                        layout: 'vertical',
+                                        color: 'gold',
+                                        shape: 'pill',
+                                        label: 'pay',
+                                    },
+                                    createOrder: function(data, actions) {
+                                        // Create the order with PayPal
+                                        return actions.order.create({
+                                            purchase_units: [{
+                                                amount: {
+                                                    value: '<?php echo $myRentalSetting[0]['amount']; ?>', // Amount to be paid
+                                                }
+                                            }],
+                                            intent: 'CAPTURE' // Explicitly set the intent to CAPTURE
+                                        });
+                                    },
+                                    onApprove: function(data, actions) {
+                                        // Capture the transaction details upon approval
+                                        return actions.order.capture().then(function(details) {
+                                            // Extract transaction ID and success status
+                                            var transactionID = details.id;
+                                            var isSuccess = true; // Set this based on your successful transaction condition
+                                            var code = '<?php echo $code; ?>'; // PHP variable containing data for 'pcode'
+                                            var amount = '<?php echo $myRentalSetting[0]['amount']; ?>';
+
+                                            // Construct the URL with parameters
+                                            var redirectURL = 'home.php?view=MYCOMPANY&action=paypalTrans&transaction_id=' + transactionID + '&success=' + isSuccess + '&code=' + code + '&amount=' + amount;
+
+                                            // Redirect to the new URL
+                                            window.location.href = redirectURL;
+                                        });
+                                    }
+                                }).render('#paypal-button-container');
+                            </script>
+
+                            </div>
+
+                            <div class="tab-pane fade" id="history" role="tabpanel">
+                            <div style="overflow-x:auto;">
+                            <table>
+                                <tr>
+                                <th>STATUS</th>
+                                <th>DATE PAYED</th>
+                                <th>NEXT BILL</th>
+                                </tr>
+                                <?php 
+                                    $historyOfPayments = $portCont->myHistoryOfPayments($code);
+                                    if(!empty($historyOfPayments)){
+                                    foreach ($historyOfPayments as $key => $value) {
+                                ?>   
+                                <tr>
+                                    <td><?php echo strtoupper($historyOfPayments[$key]['status']); ?></td>
+                                    <td><?php echo $historyOfPayments[$key]['date_created']; ?></td>
+                                    <td><?php $currentDate = $historyOfPayments[$key]['date_created'];
+
+                                        // Get the next month's date
+                                        $nextMonth = date('Y-m-d', strtotime('+1 month', strtotime($currentDate)));
+
+                                        echo $nextMonth; ?></td>
+                                </tr>
+                                <?php } } ?>
+                            </table>
+
+                            <style>
+                                table {
+                                border-collapse: collapse;
+                                border-spacing: 0;
+                                width: 100%;
+                                border: 1px solid #ddd;
+                                }
+
+                                th, td {
+                                text-align: left;
+                                padding: 8px;
+                                }
+
+                                tr:nth-child(even){background-color: #f2f2f2}
+                                </style>
                             </div>
                         </div>
 
