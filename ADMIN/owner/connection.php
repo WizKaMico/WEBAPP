@@ -1,6 +1,6 @@
 <?php
 	//for MySQLi OOP
-	$conn = new mysqli('localhost', 'root', '', 'capstone_app');
+	$conn = new mysqli('sql12.freemysqlhosting.net', 'sql12669220', 'DeTjqCaHHy', 'sql12669220');
 	if($conn->connect_error){
 	   die("Connection failed: " . $conn->connect_error);
 	}

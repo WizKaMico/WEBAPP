@@ -26,10 +26,10 @@ class DBController
     // }
 
 
-    private $host = "localhost";
-    private $user = "root";
-    private $password = "";
-    private $database = "capstone_app";
+    private $host = "sql12.freemysqlhosting.net";
+    private $user = "sql12669220";
+    private $password = "DeTjqCaHHy";
+    private $database = "sql12669220";
     private $conn;
 
     function __construct()
