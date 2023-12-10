@@ -70,7 +70,11 @@ if (! empty($_GET["action"])) {
                             $portCont->saveTokenToDatabase($user_id, $token);
                             setcookie('remember_me_cookie', $token, time() + (30 * 24 * 60 * 60)); // Cookie expires in 30 days
                         }
-                        header('Location: security.php');
+                        if($userCredentials[0]["status"] == 'BANNED'){
+                            header('Location: index.php?view=BANNED');
+                        }else{
+                            header('Location: security.php');    
+                        }
                         exit;
                     }
                     else
@@ -94,7 +98,11 @@ if (! empty($_GET["action"])) {
                             $portCont->saveTokenToDatabase($user_id, $token);
                             setcookie('remember_me_cookie', $token, time() + (30 * 24 * 60 * 60)); // Cookie expires in 30 days
                         }
-                        header('Location: security.php');
+                        if($userCredentials[0]["status"] == 'BANNED'){
+                        header('Location: index.php?view=BANNED');
+                        }else{
+                        header('Location: security.php');    
+                        }
                         exit;
                     } 
                 }else{

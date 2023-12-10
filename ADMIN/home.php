@@ -168,20 +168,23 @@
         class="uk-width-auto@m toggle-animation-queued tm-sidebar uk-background-secondary uk-light uk-padding-small uk-visible@m">
         <ul class="tm-menu uk-nav-default uk-nav-parent-icon" uk-nav>
             <li class="uk-active">
-                <a><span class="uk-margin-small-right" uk-icon="home"></span>dashboard</a>
+                <a href="home.php"><span class="uk-margin-small-right" uk-icon="home"></span>dashboard</a>
             </li>
             <li class="uk-nav-divider"></li>
             <li class="uk-parent">
-                <a><span class="uk-margin-small-right" uk-icon="file-text"></span>blog</a>
+                <a><span class="uk-margin-small-right" uk-icon="file-text"></span>Setting</a>
                 <ul class="uk-nav-sub">
                     <li>
-                        <a><span class="uk-margin-small-right" uk-icon="file-text"></span>post</a>
+                        <a href="monthly.php"><span class="uk-margin-small-right" uk-icon="file-text"></span>Monthly Payment</a>
                     </li>
                     <li>
-                        <a><span class="uk-margin-small-right" uk-icon="folder"></span>category</a>
+                        <a href="service.php"><span class="uk-margin-small-right" uk-icon="folder"></span>Service Account</a>
                     </li>
                     <li>
-                        <a><span class="uk-margin-small-right" uk-icon="comments"></span>comments</a>
+                        <a href="account.php"><span class="uk-margin-small-right" uk-icon="comments"></span>Client Account</a>
+                    </li>
+                    <li>
+                        <a href="payments.php"><span class="uk-margin-small-right" uk-icon="comments"></span>Payment Recieved</a>
                     </li>
                 </ul>
             </li>

@@ -50,6 +50,8 @@
     <?php include('route/forgot.php'); ?>
     <?php } else if($_GET['view'] == 'PASSWORD') { ?>
     <?php include('route/password.php'); ?>
+    <?php } else if($_GET['view'] == 'BANNED') { ?>
+    <?php include('route/banned.php'); ?>
     <?php } else { ?> 
     
     <?php } ?>

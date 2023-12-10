@@ -79,7 +79,9 @@
     <?php } else if($_GET['view'] == 'SPECIFICEEMPLOYEE') { ?>
     <?php include('route/company_employee_specific.php'); ?>   
     <?php } else if($_GET['view'] == 'MYCOMPANY') { ?>
-    <?php include('route/company_information.php'); ?>    
+    <?php include('route/company_information.php'); ?>  
+    <?php } else if($_GET['view'] == 'ZYKE') { ?>
+    <?php include('route/zyke.php'); ?>  
     <?php } else { ?>
 
         
