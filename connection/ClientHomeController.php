@@ -576,6 +576,10 @@ if(!empty($_GET['tracking'])){
                                         }
                                         break;
 
+                                    case "logout":
+                                        header('Location: home.php?message=logout');
+                                        break;
+
 
 
 

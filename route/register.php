@@ -13,7 +13,7 @@
          <div class="form-group basic">
             <div class="input-wrapper">
                 <label class="label" for="email1">Phone</label>
-                <input type="number" name="phone" class="form-control" id="email1" placeholder="Your Phone Number" required>
+                <input type="text" name="phone" id="email1"  class="form-control" pattern="[0-9]{11}" title="Please enter a valid 11-digit Philippine phone number" placeholder="09531599179" required>
                 <i class="clear-input">
                     <ion-icon name="close-circle"></ion-icon>
                 </i>

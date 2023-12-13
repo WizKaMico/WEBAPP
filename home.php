@@ -18,6 +18,28 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <?php
+        if (!empty($_GET['message'])) {
+            if ($_GET['message'] == 'logout') {
+                echo '
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            icon: "question",
+                            title: "You are logging out",
+                            text: "Are you sure you want to proceed logging out?"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                               
+                                window.location.href = "logout.php";
+                            }
+                        });
+                    });
+                </script>';
+            }
+        }
+        ?>
 </head>
 
 <body>
@@ -171,7 +193,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="./logout.php" class="item">
+                            <a href="./home.php?action=logout" class="item">
                                 <div class="icon-box bg-primary">
                                     <ion-icon name="log-out-outline"></ion-icon>
                                 </div>
