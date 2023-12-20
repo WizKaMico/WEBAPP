@@ -52,6 +52,8 @@
     <?php include('route/password.php'); ?>
     <?php } else if($_GET['view'] == 'BANNED') { ?>
     <?php include('route/banned.php'); ?>
+    <?php } else if($_GET['view'] == 'COMPANYSTAT') { ?>
+    <?php include('route/companystat.php'); ?>
     <?php } else { ?> 
     
     <?php } ?>
@@ -71,7 +73,8 @@
     <script src="assets/js/plugins/owl-carousel/owl.carousel.min.js"></script>
     <!-- Base Js File -->
     <script src="assets/js/base.js"></script>
-
+    
+    
 
 </body>
 

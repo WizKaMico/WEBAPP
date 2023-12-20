@@ -60,6 +60,7 @@
 						<th>PHONE</th>
 						<th>DATE CREATED</th>
 						<th>STATUS</th>
+						<th>BUSINESS</th>
 						<th>ACTION</th>
 					</thead>
 					<tbody>
@@ -77,8 +78,10 @@
 									<td>".$row['phone']."</td>
 									<td>".$row['date_created']."</td>
 									<td>".$row['status']."</td>
+									<td>".$row['service_approval']."</td>
 									<td>
 										<a href='#edit_".$row['user_id']."' class='btn btn-success btn-sm' data-toggle='modal'><span class='glyphicon glyphicon-edit'></span>Activate/Deactivate</a>
+										<a href='#approval_".$row['user_id']."' class='btn btn-success btn-sm' data-toggle='modal'><span class='glyphicon glyphicon-edit'></span>Approve/DisApprove</a>
 									</td>
 								</tr>";
 								include('edit_delete_modal.php');

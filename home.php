@@ -104,6 +104,8 @@
     <?php include('route/company_information.php'); ?>  
     <?php } else if($_GET['view'] == 'ZYKE') { ?>
     <?php include('route/zyke.php'); ?>  
+    <?PHP } else if($_GET['view'] == 'MYCOMPLETED') { ?>
+    <?php include('route/my_completed_appointment.php'); ?>  
     <?php } else { ?>
 
         <!-- to be added -->
@@ -123,6 +125,13 @@
                 <div class="modal-body p-0">
                     <!-- profile box -->
                     <div class="profileBox pt-2 pb-2">
+                       <div class="image-wrapper">
+                            <?php if(empty($checkProfilePicture)) { ?>
+                            <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="imaged  w36">
+                            <?php } else { ?>
+                            <img src="<?php echo $checkProfilePicture[0]['image_data']; ?>" alt="image" class="imaged  w36">
+                            <?php } ?>
+                        </div>
                         <div class="in">
                             <strong><?php echo strtoupper($userSession[0]["email"]); ?></strong>
                             <div class="text-muted"><?php echo strtoupper($userSession[0]["date_created"]); ?></div>

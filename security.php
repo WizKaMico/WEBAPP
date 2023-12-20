@@ -16,6 +16,23 @@
     <!-- <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32"> -->
     <!-- <link rel="shortcut icon" href="assets/img/favicon.png"> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <?php
+        if (!empty($_GET['action'])) {
+            if ($_GET['action'] == 'security') {
+                echo '
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Security Code Error",
+                            text: "Please make sure to put the proper code to validate"
+                        });
+                    });
+                </script>';
+            }
+        }
+        ?>
 </head>
 
 <body class="bg-light">

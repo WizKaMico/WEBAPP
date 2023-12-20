@@ -6,10 +6,12 @@ $portCont = new appController();
 $userSession = $portCont->getUserDetails($session_id);
 $code = $userSession[0]['code'];
 $myCompany = $portCont->getCompanyDetails($code);
+$checkProfilePicture = $portCont->getProfilePicture($code);
 $userDetails = $portCont->getUserCompleteDetails($code);
 $clientBookingDetails =  $portCont->myTotalBookings($code);
 $clientBookingDetailsToday = $portCont->myBookingsToday($code);
 $OwnerBookingDetails = $portCont->myOwnerTotalBookings($code);
+$OwnerBookingDetailsCompleted = $portCont->myOwnerTotalBookingsCompleted($code);
 $OwnerBookingDetailsToday = $portCont->myOwnerTotalBookingsToday($code);
 $OwnerServiceCount = $portCont->myServiceList($code);
 $OwnerPromoCount = $portCont->myPromoListList($code);
@@ -198,6 +200,48 @@ if(!empty($_GET['tracking'])){
         
                             $portCont->uploadCompanyLogo($company_code, $photoPath);
                             header('Location: home.php?view=MYCOMPANY');
+                        }
+                    }
+                }
+                break;
+
+            case "uploadmyprofilepicture":
+                if(isset($_POST['proceed'])){
+                    $user_code = $code;
+                    $photoName = $_FILES['photo']['name'];
+                    $photoTmpName = $_FILES['photo']['tmp_name'];
+
+                    if(!empty($photoName) && !empty($user_code)){
+                        $checkifThisHasImage = $portCont->checkProfilePicture($user_code);
+
+                        if(!empty($checkifThisHasImage)){
+                            $uploadDir = 'uploads' . strtolower($category); // Use '.' for string concatenation in PHP
+
+                            if (!file_exists($uploadDir)) {
+                                mkdir($uploadDir, 0777, true);
+                            }
+                            
+                            $photoPath = $uploadDir . '/' . $photoName;
+                            
+                            // Move the uploaded file to the directory
+                            move_uploaded_file($photoTmpName, $photoPath);
+        
+                            $portCont->updateProfilePicture($user_code, $photoPath);
+                            header('Location: home.php?view=SETTING');
+                        }else{
+                            $uploadDir = 'uploads' . strtolower($category); // Use '.' for string concatenation in PHP
+
+                            if (!file_exists($uploadDir)) {
+                                mkdir($uploadDir, 0777, true);
+                            }
+                            
+                            $photoPath = $uploadDir . '/' . $photoName;
+                            
+                            // Move the uploaded file to the directory
+                            move_uploaded_file($photoTmpName, $photoPath);
+        
+                            $portCont->uploadProfilePicture($user_code, $photoPath);
+                            header('Location: home.php?view=SETTING');
                         }
                     }
                 }

@@ -39,6 +39,16 @@
                   </a>
                 </div> 
                 <div class="col-6">
+                  <a href="home.php?view=MYCOMPLETED">
+                    <div class="stat-box">
+                        <div class="title">COMPLETED</div>
+                        <div class="value"><?php echo $OwnerBookingDetailsCompleted[0]['total']; ?></div>
+                    </div>
+                  </a>
+                </div> 
+            </div>
+            <div class="row mt-2">
+                <div class="col-6">
                     <div class="stat-box">
                       <a data-toggle="modal" data-target="#addService">
                         <div class="title">TOTAL SERVICES</div>
@@ -46,7 +56,14 @@
                         <div class="value"><?php echo $OwnerServiceCount[0]['total']; ?></div>
                     </div>
                 </div>
-                </a>
+                <div class="col-6">
+                    <div class="stat-box">
+                        <a data-toggle="modal" data-target="#addBookingPromo">
+                            <div class="title">TOTAL PROMO</div>
+                        </a>
+                           <div class="value"><?php echo $OwnerPromoCount[0]['total']; ?></div>
+                    </div>
+                </div>
             </div>
             <div class="row mt-2">
                 <div class="col-6">
@@ -57,19 +74,7 @@
                         </div>
                 </a>
                 </div>
-              
                 <div class="col-6">
-                    <div class="stat-box">
-                        <a data-toggle="modal" data-target="#addBookingPromo">
-                            <div class="title">TOTAL PROMO</div>
-                        </a>
-                           <div class="value"><?php echo $OwnerPromoCount[0]['total']; ?></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-2">
-                <div class="col-12">
                   <a href="#" class="button" data-toggle="modal" data-target="#addEmployee">
                         <div class="stat-box">
                             <div class="title">TOTAL EMPLOYEE</div>
@@ -78,6 +83,10 @@
                    </a>
                 </div>
             </div>
+
+            <!-- <div class="row mt-2">
+               
+            </div> -->
 
            
           

@@ -20,92 +20,300 @@
                 <!-- * Balance -->
             </div>
 
+             <!-- pilled tab -->
+             <div class="tab-pane fade show active" id="pilled" role="tabpanel">
+
+            <div class="section full mt-1">
+                <div class="section-title">Booking Stat</div>
+                <div class="wide-block pt-2 pb-2">
+
+                    <ul class="nav nav-tabs style1" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#Pending" role="tab">
+                                PENDING
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#Decline" role="tab">
+                                DECLINE
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#Completed" role="tab">
+                                COMPLETED
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-2">
+                        <div class="tab-pane fade show active" id="Pending" role="tabpanel">
+                        <div class="section" style="margin-top:10px;">
+                        <ul class="listview image-listview media mb-2">
+                                <?php 
+                                    $appointmentList = $portCont->myAppointmentListPendingInprogress($code); 
+                                    if (!empty($appointmentList)) {
+                                        foreach ($appointmentList as $key => $value) {
+                                            date_default_timezone_set('Asia/Manila');
+                                            $dateToday = date('Y-m-d'); 
+
+                                            $dateAppointment = $appointmentList[$key]['date_appointment'];
+                                            $isToday = ($dateAppointment == $dateToday);
+                                            $isFuture = ($dateAppointment > $dateToday);
+                                            $isPast = ($dateAppointment < $dateToday);
+
+                                            // Calculate the difference in days
+                                            $dateAppointmentObj = new DateTime($dateAppointment);
+                                            $dateTodayObj = new DateTime($dateToday);
+                                            $daysDifference = $dateTodayObj->diff($dateAppointmentObj)->days;
+
+                                            $time_appointment = $appointmentList[$key]['time_appointment'];
+
+                                            // Convert the time to a DateTime object to handle the conversion
+                                            $datetime = new DateTime($time_appointment);
+
+                                            // Format the time in 12-hour format with AM/PM
+                                            $formatted_time = $datetime->format("g:i A");
+
+                                            // Output messages based on the date comparison
+                                            $bid = $appointmentList[$key]['bid'];
+                                            $checker = $portCont->checkConfirmation($bid);
+                                            
+                                            if (!empty($checker)) {
+                                                $estimated_minutes = $checker[0]['estimated_minutes'];
+                                            
+                                                // Create a DateTime object from the formatted time
+                                                $appointment_datetime = new DateTime($formatted_time);
+                                            
+                                                // Add the estimated minutes to the appointment time
+                                                $eta_datetime = clone $appointment_datetime; // Create a copy to avoid modifying the original
+                                                $eta_datetime->add(new DateInterval("PT{$estimated_minutes}M"));
+                                            
+                                                // Format the ETA time
+                                                $dt = $eta_datetime->format("g:i A");
+                                                $eta = $dt.'-'.$estimated_minutes.'mins';
+                                                $assign = $checker[0]['emp_id'];
+                                            } else {
+                                                $eta = '';
+                                                $assign = '';
+                                            }
+                                        ?>  
+                                            <li>
+                                                <a href="#" data-toggle="modal" data-target="#specificAppointmentDetails<?php echo $appointmentList[$key]['bid']; ?>" class="item">
+                                                    <div class="imageWrapper">
+                                                        <img src="./<?php echo $appointmentList[$key]['photo']; ?>" alt="image" class="imaged w64">
+                                                    </div>
+                                                    <div class="in">
+                                                        <div>
+                                                        <?php echo $appointmentList[$key]['lname']; ?> , <?php echo $appointmentList[$key]['fname']; ?>
+                                                            <div class="text-muted">👨‍🔧 SERVICE : <?php echo $appointmentList[$key]['servicename']; ?></div>
+                                                            <div class="text-muted">📅 DATE : <?php echo $dateAppointment; ?></div>
+                                                            <div class="text-muted">⏰ TIME : <?php echo $formatted_time; ?></div>
+                                                            <div class="text-muted">📍 STATUS :  <?php echo $appointmentList[$key]['status']; ?></div>
+                                                            <div class="text-muted">⏱ ETA :  <?php echo  $eta; ?></div>
+                                                            <div class="text-muted">👨‍🔧 ASSIGN :  <?php echo $assign; ?></div>
+                                                            <div class="text-muted">💰 TO PAY :  <?php echo $appointmentList[$key]['price']; ?></div>
+                                                        </div>
+                                                        <?php if ($isToday) { ?>
+                                                            <span class="badge badge-primary">today</span>
+                                                        <?php } elseif ($isFuture) { ?>
+                                                            <span class="badge badge-primary"><?php echo $daysDifference; ?> day</span>
+                                                        <?php } ?>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <?php if($appointmentList[$key]['status'] == 'PENDING' || $appointmentList[$key]['status'] == 'DECLINE') { ?>
+                                            <?php include('modal/myAppointmentSpecific.php'); ?> 
+                                            <?php } else { ?> 
+                                            <?php include('modal/myAppointmentSpecificConfirmed.php'); ?> 
+                                            <?php } ?>
+                                        <?php } ?>
+                                    <?php }
+                                ?>
+                            </ul>
+                        </div>
+                        </div>
+                        <div class="tab-pane fade" id="Decline" role="tabpanel">
+                        <div class="section" style="margin-top:10px;">
+                        <ul class="listview image-listview media mb-2">
+                                <?php 
+                                    $appointmentList = $portCont->myAppointmentListDecline($code); 
+                                    if (!empty($appointmentList)) {
+                                        foreach ($appointmentList as $key => $value) {
+                                            date_default_timezone_set('Asia/Manila');
+                                            $dateToday = date('Y-m-d'); 
+
+                                            $dateAppointment = $appointmentList[$key]['date_appointment'];
+                                            $isToday = ($dateAppointment == $dateToday);
+                                            $isFuture = ($dateAppointment > $dateToday);
+                                            $isPast = ($dateAppointment < $dateToday);
+
+                                            // Calculate the difference in days
+                                            $dateAppointmentObj = new DateTime($dateAppointment);
+                                            $dateTodayObj = new DateTime($dateToday);
+                                            $daysDifference = $dateTodayObj->diff($dateAppointmentObj)->days;
+
+                                            $time_appointment = $appointmentList[$key]['time_appointment'];
+
+                                            // Convert the time to a DateTime object to handle the conversion
+                                            $datetime = new DateTime($time_appointment);
+
+                                            // Format the time in 12-hour format with AM/PM
+                                            $formatted_time = $datetime->format("g:i A");
+
+                                            // Output messages based on the date comparison
+                                            $bid = $appointmentList[$key]['bid'];
+                                            $checker = $portCont->checkConfirmation($bid);
+                                            
+                                            if (!empty($checker)) {
+                                                $estimated_minutes = $checker[0]['estimated_minutes'];
+                                            
+                                                // Create a DateTime object from the formatted time
+                                                $appointment_datetime = new DateTime($formatted_time);
+                                            
+                                                // Add the estimated minutes to the appointment time
+                                                $eta_datetime = clone $appointment_datetime; // Create a copy to avoid modifying the original
+                                                $eta_datetime->add(new DateInterval("PT{$estimated_minutes}M"));
+                                            
+                                                // Format the ETA time
+                                                $dt = $eta_datetime->format("g:i A");
+                                                $eta = $dt.'-'.$estimated_minutes.'mins';
+                                                $assign = $checker[0]['emp_id'];
+                                            } else {
+                                                $eta = '';
+                                                $assign = '';
+                                            }
+                                        ?>  
+                                            <li>
+                                                <a href="#" data-toggle="modal" data-target="#specificAppointmentDetails<?php echo $appointmentList[$key]['bid']; ?>" class="item">
+                                                    <div class="imageWrapper">
+                                                        <img src="./<?php echo $appointmentList[$key]['photo']; ?>" alt="image" class="imaged w64">
+                                                    </div>
+                                                    <div class="in">
+                                                        <div>
+                                                        <?php echo $appointmentList[$key]['lname']; ?> , <?php echo $appointmentList[$key]['fname']; ?>
+                                                            <div class="text-muted">👨‍🔧 SERVICE : <?php echo $appointmentList[$key]['servicename']; ?></div>
+                                                            <div class="text-muted">📅 DATE : <?php echo $dateAppointment; ?></div>
+                                                            <div class="text-muted">⏰ TIME : <?php echo $formatted_time; ?></div>
+                                                            <div class="text-muted">📍 STATUS :  <?php echo $appointmentList[$key]['status']; ?></div>
+                                                            <div class="text-muted">⏱ ETA :  <?php echo  $eta; ?></div>
+                                                            <div class="text-muted">👨‍🔧 ASSIGN :  <?php echo $assign; ?></div>
+                                                            <div class="text-muted">💰 TO PAY :  <?php echo $appointmentList[$key]['price']; ?></div>
+                                                        </div>
+                                                        <?php if ($isToday) { ?>
+                                                            <span class="badge badge-primary">today</span>
+                                                        <?php } elseif ($isFuture) { ?>
+                                                            <span class="badge badge-primary"><?php echo $daysDifference; ?> day</span>
+                                                        <?php } ?>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <?php if($appointmentList[$key]['status'] == 'PENDING' || $appointmentList[$key]['status'] == 'DECLINE') { ?>
+                                            <?php include('modal/myAppointmentSpecific.php'); ?> 
+                                            <?php } else { ?> 
+                                            <?php include('modal/myAppointmentSpecificConfirmed.php'); ?> 
+                                            <?php } ?>
+                                        <?php } ?>
+                                    <?php }
+                                ?>
+                            </ul>
+                        </div>
+                        </div>
+                        <div class="tab-pane fade" id="Completed" role="tabpanel">
+                        <div class="section" style="margin-top:10px;">
+                        <ul class="listview image-listview media mb-2">
+                                <?php 
+                                    $appointmentList = $portCont->myAppointmentListCompleted($code); 
+                                    if (!empty($appointmentList)) {
+                                        foreach ($appointmentList as $key => $value) {
+                                            date_default_timezone_set('Asia/Manila');
+                                            $dateToday = date('Y-m-d'); 
+
+                                            $dateAppointment = $appointmentList[$key]['date_appointment'];
+                                            $isToday = ($dateAppointment == $dateToday);
+                                            $isFuture = ($dateAppointment > $dateToday);
+                                            $isPast = ($dateAppointment < $dateToday);
+
+                                            // Calculate the difference in days
+                                            $dateAppointmentObj = new DateTime($dateAppointment);
+                                            $dateTodayObj = new DateTime($dateToday);
+                                            $daysDifference = $dateTodayObj->diff($dateAppointmentObj)->days;
+
+                                            $time_appointment = $appointmentList[$key]['time_appointment'];
+
+                                            // Convert the time to a DateTime object to handle the conversion
+                                            $datetime = new DateTime($time_appointment);
+
+                                            // Format the time in 12-hour format with AM/PM
+                                            $formatted_time = $datetime->format("g:i A");
+
+                                            // Output messages based on the date comparison
+                                            $bid = $appointmentList[$key]['bid'];
+                                            $checker = $portCont->checkConfirmation($bid);
+                                            
+                                            if (!empty($checker)) {
+                                                $estimated_minutes = $checker[0]['estimated_minutes'];
+                                            
+                                                // Create a DateTime object from the formatted time
+                                                $appointment_datetime = new DateTime($formatted_time);
+                                            
+                                                // Add the estimated minutes to the appointment time
+                                                $eta_datetime = clone $appointment_datetime; // Create a copy to avoid modifying the original
+                                                $eta_datetime->add(new DateInterval("PT{$estimated_minutes}M"));
+                                            
+                                                // Format the ETA time
+                                                $dt = $eta_datetime->format("g:i A");
+                                                $eta = $dt.'-'.$estimated_minutes.'mins';
+                                                $assign = $checker[0]['emp_id'];
+                                            } else {
+                                                $eta = '';
+                                                $assign = '';
+                                            }
+                                        ?>  
+                                            <li>
+                                                <a href="#" data-toggle="modal" data-target="#specificAppointmentDetails<?php echo $appointmentList[$key]['bid']; ?>" class="item">
+                                                    <div class="imageWrapper">
+                                                        <img src="./<?php echo $appointmentList[$key]['photo']; ?>" alt="image" class="imaged w64">
+                                                    </div>
+                                                    <div class="in">
+                                                        <div>
+                                                        <?php echo $appointmentList[$key]['lname']; ?> , <?php echo $appointmentList[$key]['fname']; ?>
+                                                            <div class="text-muted">👨‍🔧 SERVICE : <?php echo $appointmentList[$key]['servicename']; ?></div>
+                                                            <div class="text-muted">📅 DATE : <?php echo $dateAppointment; ?></div>
+                                                            <div class="text-muted">⏰ TIME : <?php echo $formatted_time; ?></div>
+                                                            <div class="text-muted">📍 STATUS :  <?php echo $appointmentList[$key]['status']; ?></div>
+                                                            <div class="text-muted">⏱ ETA :  <?php echo  $eta; ?></div>
+                                                            <div class="text-muted">👨‍🔧 ASSIGN :  <?php echo $assign; ?></div>
+                                                            <div class="text-muted">💰 TO PAY :  <?php echo $appointmentList[$key]['price']; ?></div>
+                                                        </div>
+                                                        <?php if ($isToday) { ?>
+                                                            <span class="badge badge-primary">today</span>
+                                                        <?php } elseif ($isFuture) { ?>
+                                                            <span class="badge badge-primary"><?php echo $daysDifference; ?> day</span>
+                                                        <?php } ?>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <?php if($appointmentList[$key]['status'] == 'PENDING' || $appointmentList[$key]['status'] == 'DECLINE') { ?>
+                                            <?php include('modal/myAppointmentSpecific.php'); ?> 
+                                            <?php } else { ?> 
+                                            <?php include('modal/myAppointmentSpecificConfirmed.php'); ?> 
+                                            <?php } ?>
+                                        <?php } ?>
+                                    <?php }
+                                ?>
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            </div>
+            <!-- * pilled tab -->
+
+
 
             <!-- Stats -->
-            <div class="section" style="margin-top:10px;">
-            <ul class="listview image-listview media mb-2">
-                    <?php 
-                        $appointmentList = $portCont->myAppointmentList($code); 
-                        if (!empty($appointmentList)) {
-                            foreach ($appointmentList as $key => $value) {
-                                date_default_timezone_set('Asia/Manila');
-                                $dateToday = date('Y-m-d'); 
-
-                                $dateAppointment = $appointmentList[$key]['date_appointment'];
-                                $isToday = ($dateAppointment == $dateToday);
-                                $isFuture = ($dateAppointment > $dateToday);
-                                $isPast = ($dateAppointment < $dateToday);
-
-                                // Calculate the difference in days
-                                $dateAppointmentObj = new DateTime($dateAppointment);
-                                $dateTodayObj = new DateTime($dateToday);
-                                $daysDifference = $dateTodayObj->diff($dateAppointmentObj)->days;
-
-                                $time_appointment = $appointmentList[$key]['time_appointment'];
-
-                                // Convert the time to a DateTime object to handle the conversion
-                                $datetime = new DateTime($time_appointment);
-
-                                // Format the time in 12-hour format with AM/PM
-                                $formatted_time = $datetime->format("g:i A");
-
-                                // Output messages based on the date comparison
-                                $bid = $appointmentList[$key]['bid'];
-                                $checker = $portCont->checkConfirmation($bid);
-                                
-                                if (!empty($checker)) {
-                                    $estimated_minutes = $checker[0]['estimated_minutes'];
-                                
-                                    // Create a DateTime object from the formatted time
-                                    $appointment_datetime = new DateTime($formatted_time);
-                                
-                                    // Add the estimated minutes to the appointment time
-                                    $eta_datetime = clone $appointment_datetime; // Create a copy to avoid modifying the original
-                                    $eta_datetime->add(new DateInterval("PT{$estimated_minutes}M"));
-                                
-                                    // Format the ETA time
-                                    $dt = $eta_datetime->format("g:i A");
-                                    $eta = $dt.'-'.$estimated_minutes.'mins';
-                                    $assign = $checker[0]['emp_id'];
-                                } else {
-                                    $eta = '';
-                                    $assign = '';
-                                }
-                            ?>  
-                                <li>
-                                    <a href="#" data-toggle="modal" data-target="#specificAppointmentDetails<?php echo $appointmentList[$key]['bid']; ?>" class="item">
-                                        <div class="imageWrapper">
-                                            <img src="./<?php echo $appointmentList[$key]['photo']; ?>" alt="image" class="imaged w64">
-                                        </div>
-                                        <div class="in">
-                                            <div>
-                                            <?php echo $appointmentList[$key]['lname']; ?> , <?php echo $appointmentList[$key]['fname']; ?>
-                                                <div class="text-muted">👨‍🔧 SERVICE : <?php echo $appointmentList[$key]['servicename']; ?></div>
-                                                <div class="text-muted">📅 DATE : <?php echo $dateAppointment; ?></div>
-                                                <div class="text-muted">⏰ TIME : <?php echo $formatted_time; ?></div>
-                                                <div class="text-muted">📍 STATUS :  <?php echo $appointmentList[$key]['status']; ?></div>
-                                                <div class="text-muted">⏱ ETA :  <?php echo  $eta; ?></div>
-                                                <div class="text-muted">👨‍🔧 ASSIGN :  <?php echo $assign; ?></div>
-                                                <div class="text-muted">💰 TO PAY :  <?php echo $appointmentList[$key]['price']; ?></div>
-                                            </div>
-                                            <?php if ($isToday) { ?>
-                                                <span class="badge badge-primary">today</span>
-                                            <?php } elseif ($isFuture) { ?>
-                                                <span class="badge badge-primary"><?php echo $daysDifference; ?> day</span>
-                                            <?php } ?>
-                                        </div>
-                                    </a>
-                                </li>
-                                <?php if($appointmentList[$key]['status'] == 'PENDING' || $appointmentList[$key]['status'] == 'DECLINE') { ?>
-                                <?php include('modal/myAppointmentSpecific.php'); ?> 
-                                <?php } else { ?> 
-                                <?php include('modal/myAppointmentSpecificConfirmed.php'); ?> 
-                                <?php } ?>
-                            <?php } ?>
-                        <?php }
-                    ?>
-                </ul>
-            </div>
+            
       </div>
         <!-- Wallet Card -->
 
