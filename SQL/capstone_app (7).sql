@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2023 at 09:03 PM
+-- Generation Time: Dec 20, 2023 at 11:19 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 5.6.40
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `sql12669220`
+-- Database: `capstone_app`
 --
 
 -- --------------------------------------------------------
@@ -92,7 +92,9 @@ INSERT INTO `tbl_booking_history` (`hid`, `tracking`, `status`, `date_updated`) 
 (13, '7986-20231128', 'PENDING', '2023-11-28'),
 (14, '7374-20231128', 'PENDING', '2023-11-28'),
 (15, '6679-20231128', 'PENDING', '2023-11-28'),
-(16, '7584-20231128', 'PENDING', '2023-11-28');
+(16, '7584-20231128', 'PENDING', '2023-11-28'),
+(17, '9961-20231027', 'COMPLETED', '2023-12-20'),
+(18, '7584-20231128', 'CONFIRM', '2023-12-20');
 
 -- --------------------------------------------------------
 
@@ -120,7 +122,7 @@ INSERT INTO `tbl_company_employee` (`eid`, `company_code`, `emp_id`, `emp_name`,
 (3, 9777, '20231014-7042', 'Gerald Mico', 'Chief Mechanic', '2023-10-14', 'AVAIL'),
 (4, 9777, '20231014-7849', 'John Paul', 'Chief Mechanic', '2023-10-14', 'AVAIL'),
 (5, 9777, '20231014-6793', 'Zyke Zyke', 'Chief Mechanic IV', '2023-10-14', 'AVAIL'),
-(6, 9603, '20231027-8606', 'Pablo Escobar', 'Chief Mechanic IIII', '2023-10-27', 'OCCUPIED');
+(6, 9603, '20231027-8606', 'Pablo Escobar', 'Chief Mechanic IIII', '2023-10-27', 'AVAIL');
 
 -- --------------------------------------------------------
 
@@ -140,7 +142,11 @@ CREATE TABLE `tbl_company_rental_setting` (
 --
 
 INSERT INTO `tbl_company_rental_setting` (`raid`, `amount`, `status`, `date_created`) VALUES
-(1, 300, 'ACTIVE', '2023-12-09');
+(1, 1000, 'ACTIVE', '2023-12-09'),
+(2, 700, 'DEACTIVE', '2023-12-10'),
+(3, 900, 'DEACTIVE', '2023-12-10'),
+(4, 1000, 'DEACTIVE', '2023-12-10'),
+(5, 800, 'DEACTIVE', '2023-12-10');
 
 -- --------------------------------------------------------
 
@@ -161,7 +167,7 @@ CREATE TABLE `tbl_information_image` (
 INSERT INTO `tbl_information_image` (`iid`, `code`, `image_data`) VALUES
 (1, 9777, 'uploads/1696900213_9777.jpg'),
 (2, 7364, 'uploads/1696917527_7364.jpg'),
-(3, 9603, 'uploads/1696942038_9603.jpg'),
+(3, 9603, 'uploads/415-4152206_kyrie-irving-vector-illustration-kyrie-irving-celtics-png-removebg-preview.png'),
 (4, 7676, 'uploads/1696942425_7676.jpg'),
 (5, 8589, 'uploads/1697037563_8589.jpg'),
 (6, 6973, 'uploads/1697037818_6973.jpg'),
@@ -252,6 +258,7 @@ CREATE TABLE `tbl_users` (
   `designation` int(50) NOT NULL,
   `code` int(11) NOT NULL,
   `status` varchar(50) NOT NULL,
+  `service_approval` varchar(50) NOT NULL,
   `date_created` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -259,18 +266,18 @@ CREATE TABLE `tbl_users` (
 -- Dumping data for table `tbl_users`
 --
 
-INSERT INTO `tbl_users` (`user_id`, `email`, `phone`, `password`, `designation`, `code`, `status`, `date_created`) VALUES
-(1, 'tricore012@gmail.com', '9531599179', '21232f297a57a5a743894a0e4a801fc3', 2, 9777, 'VERIFIED', '2023-10-10'),
-(2, 'revcoreitsolution@gmail.com', '9983032537', '21232f297a57a5a743894a0e4a801fc3', 3, 7364, 'VERIFIED', '2023-10-10'),
-(3, 'gmfacistol@outlook.com', '09166513189', '21232f297a57a5a743894a0e4a801fc3', 2, 9603, 'VERIFIED', '2023-10-10'),
-(4, 'mico101213@gmail.com', '9903391823', '21232f297a57a5a743894a0e4a801fc3', 3, 7676, 'VERIFIED', '2023-10-10'),
-(5, 'admin@gmail.com', '0999228238', '21232f297a57a5a743894a0e4a801fc3', 1, 8990, 'VERIFIED', '2023-09-28'),
-(6, 'thenextlevelplay@gmail.com', '09775647711', '21232f297a57a5a743894a0e4a801fc3', 2, 8589, 'VERIFIED', '2023-10-11'),
-(7, 'testclient@gmail.com', '09998823232', '21232f297a57a5a743894a0e4a801fc3', 3, 6973, 'VERIFIED', '2023-10-11'),
-(8, 'helloblob@gmail.com', '0942652626262', '21232f297a57a5a743894a0e4a801fc3', 2, 7406, 'VERIFIED', '2023-10-12'),
-(9, 'Zykecastro8@gmail.com', '953159918922', '21232f297a57a5a743894a0e4a801fc3', 3, 8677, 'VERIFIED', '2023-10-12'),
-(10, 'highlordapo@gmail.com', '9531599178', '21232f297a57a5a743894a0e4a801fc3', 3, 7267, 'VERIFIED', '2023-11-21'),
-(11, 'helloowner@gmail.com', '95315991881', '21232f297a57a5a743894a0e4a801fc3', 2, 7873, 'VERIFIED', '2023-11-21');
+INSERT INTO `tbl_users` (`user_id`, `email`, `phone`, `password`, `designation`, `code`, `status`, `service_approval`, `date_created`) VALUES
+(1, 'tricore012@gmail.com', '9531599179', '21232f297a57a5a743894a0e4a801fc3', 2, 9777, 'VERIFIED', 'APPROVED', '2023-10-10'),
+(2, 'revcoreitsolution@gmail.com', '9983032537', '21232f297a57a5a743894a0e4a801fc3', 3, 7364, 'VERIFIED', '', '2023-10-10'),
+(3, 'gmfacistol@outlook.com', '09166513189', '21232f297a57a5a743894a0e4a801fc3', 2, 9603, 'VERIFIED', 'APPROVED', '2023-10-10'),
+(4, 'mico101213@gmail.com', '9903391823', '21232f297a57a5a743894a0e4a801fc3', 3, 7676, 'VERIFIED', '', '2023-10-10'),
+(5, 'admin@gmail.com', '0999228238', '21232f297a57a5a743894a0e4a801fc3', 1, 8990, 'VERIFIED', '', '2023-09-28'),
+(6, 'thenextlevelplay@gmail.com', '09775647711', '21232f297a57a5a743894a0e4a801fc3', 2, 8589, 'VERIFIED', 'APPROVED', '2023-10-11'),
+(7, 'testclient@gmail.com', '09998823232', '21232f297a57a5a743894a0e4a801fc3', 3, 6973, 'VERIFIED', '', '2023-10-11'),
+(8, 'helloblob@gmail.com', '0942652626262', '21232f297a57a5a743894a0e4a801fc3', 2, 7406, 'VERIFIED', 'APPROVED', '2023-10-12'),
+(9, 'Zykecastro8@gmail.com', '953159918922', '21232f297a57a5a743894a0e4a801fc3', 3, 8677, 'VERIFIED', '', '2023-10-12'),
+(10, 'highlordapo@gmail.com', '9531599178', '21232f297a57a5a743894a0e4a801fc3', 3, 7267, 'VERIFIED', '', '2023-11-21'),
+(11, 'helloowner@gmail.com', '95315991881', '21232f297a57a5a743894a0e4a801fc3', 2, 7873, 'VERIFIED', 'APPROVED', '2023-11-21');
 
 -- --------------------------------------------------------
 
@@ -299,14 +306,14 @@ CREATE TABLE `tbl_user_booking` (
 --
 
 INSERT INTO `tbl_user_booking` (`bid`, `sid`, `tracking`, `booked_by`, `car_model`, `car_brand`, `price`, `date_appointment`, `time_appointment`, `photo`, `promo_code`, `status`, `booking_date`) VALUES
-(1, 6, '9961-20231027', 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '250', '2023-10-27', '12:15', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'IN-PROGRESS', '2023-10-27'),
+(1, 6, '9961-20231027', 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '250', '2023-10-27', '12:15', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'COMPLETED', '2023-10-27'),
 (2, 9, '8030-20231027', 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '250', '2023-10-28', '12:49', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'CONFIRM', '2023-10-27'),
 (3, 5, '7335-20231127', 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '250', '2023-11-28', '21:29', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'DECLINE', '2023-11-27'),
 (4, 5, '9795-20231128', 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '250', '2023-11-30', '13:38', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'PENDING', '2023-11-28'),
 (5, 5, '7986-20231128', 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '250', '2023-11-30', '13:39', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'PENDING', '2023-11-28'),
 (6, 5, '7374-20231128', 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '250', '2023-11-30', '13:41', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'PENDING', '2023-11-28'),
 (7, 5, '6679-20231128', 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '250', '2023-11-29', '11:44', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'PENDING', '2023-11-28'),
-(8, 5, '7584-20231128', 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '500', '2023-11-30', '13:55', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'PENDING', '2023-11-28');
+(8, 5, '7584-20231128', 7364, 'SUZUKI ESPRESSO', 'SUZUKI', '500', '2023-11-30', '13:55', 'UserClientCarDetails/7364/suzuki-s-presso-2021-main-1647945552.jpg', 'NOT AVAILABLE', 'CONFIRM', '2023-11-28');
 
 -- --------------------------------------------------------
 
@@ -452,7 +459,9 @@ CREATE TABLE `tbl_user_monthly_payment_history` (
 --
 
 INSERT INTO `tbl_user_monthly_payment_history` (`rpid`, `code`, `status`, `transaction_id`, `amount`, `date_created`) VALUES
-(1, 8990, 'true', '97S48705TM388221P', 300, '2023-12-09');
+(1, 8990, 'true', '97S48705TM388221P', 300, '2023-12-09'),
+(2, 9603, 'true', '3HH5366539204520W', 500, '2023-12-10'),
+(3, 9777, 'true', '0U222986LG8478719', 1000, '2023-12-10');
 
 -- --------------------------------------------------------
 
@@ -566,7 +575,27 @@ INSERT INTO `tbl_user_security` (`sid`, `email`, `code`, `status`, `date_created
 (59, 'gmfacistol@outlook.com', 7331, 'USED', '2023-11-28'),
 (60, 'revcoreitsolution@gmail.com', 8137, 'USED', '2023-11-28'),
 (61, 'gmfacistol@outlook.com', 7524, 'USED', '2023-11-28'),
-(62, 'gmfacistol@outlook.com', 9325, 'USED', '2023-12-09');
+(62, 'gmfacistol@outlook.com', 9325, 'USED', '2023-12-09'),
+(63, 'revcoreitsolution@gmail.com', 8288, 'UNUSED', '2023-12-10'),
+(64, 'revcoreitsolution@gmail.com', 8912, 'UNUSED', '2023-12-10'),
+(65, 'revcoreitsolution@gmail.com', 7910, 'USED', '2023-12-10'),
+(66, 'gmfacistol@outlook.com', 7347, 'USED', '2023-12-10'),
+(67, 'gmfacistol@outlook.com', 7928, 'USED', '2023-12-10'),
+(68, 'tricore012@gmail.com', 9592, 'USED', '2023-12-10'),
+(69, 'tricore012@gmail.com', 9046, 'UNUSED', '2023-12-10'),
+(70, 'tricore012@gmail.com', 7982, 'USED', '2023-12-10'),
+(71, 'revcoreitsolution@gmail.com', 8988, 'USED', '2023-12-10'),
+(72, 'revcoreitsolution@gmail.com', 9875, 'USED', '2023-12-10'),
+(73, 'revcoreitsolution@gmail.com', 7491, 'USED', '2023-12-10'),
+(74, 'gmfacistol@outlook.com', 6816, 'UNUSED', '2023-12-18'),
+(75, 'gmfacistol@outlook.com', 9079, 'USED', '2023-12-19'),
+(76, 'gmfacistol@outlook.com', 9059, 'UNUSED', '2023-12-19'),
+(77, 'gmfacistol@outlook.com', 7797, 'UNUSED', '2023-12-19'),
+(78, 'gmfacistol@outlook.com', 8181, 'UNUSED', '2023-12-19'),
+(79, 'gmfacistol@outlook.com', 9256, 'USED', '2023-12-20'),
+(80, 'gmfacistol@outlook.com', 6985, 'USED', '2023-12-20'),
+(81, 'gmfacistol@outlook.com', 7480, 'UNUSED', '2023-12-20'),
+(82, 'gmfacistol@outlook.com', 9632, 'USED', '2023-12-20');
 
 -- --------------------------------------------------------
 
@@ -737,7 +766,7 @@ ALTER TABLE `tbl_assigned_employee`
 -- AUTO_INCREMENT for table `tbl_booking_history`
 --
 ALTER TABLE `tbl_booking_history`
-  MODIFY `hid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `hid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `tbl_company_employee`
@@ -749,7 +778,7 @@ ALTER TABLE `tbl_company_employee`
 -- AUTO_INCREMENT for table `tbl_company_rental_setting`
 --
 ALTER TABLE `tbl_company_rental_setting`
-  MODIFY `raid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `raid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tbl_information_image`
@@ -815,7 +844,7 @@ ALTER TABLE `tbl_user_message`
 -- AUTO_INCREMENT for table `tbl_user_monthly_payment_history`
 --
 ALTER TABLE `tbl_user_monthly_payment_history`
-  MODIFY `rpid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `rpid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_user_promo`
@@ -827,7 +856,7 @@ ALTER TABLE `tbl_user_promo`
 -- AUTO_INCREMENT for table `tbl_user_security`
 --
 ALTER TABLE `tbl_user_security`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT for table `tbl_user_store_services`
