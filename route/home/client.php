@@ -74,7 +74,7 @@
                         <img src="./assets/img/company_logo.png" alt="image" class="imaged w-100" style="width:100%;">
                         <?php } ?>
                         <div class="title" style="text-align:center;"><?php echo strtoupper($company[$key]['company']); ?></div>
-                        <div class="value"></div>
+                        <div class="value" style="font-size:10px; text-align:center;">📍 <?php echo strtoupper($company[$key]['city_text']); ?></div>
                     </div>
                 </a>
             </div>

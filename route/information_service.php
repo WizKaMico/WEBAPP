@@ -9,7 +9,7 @@
             <div class="form-group basic">
                 <div class="input-wrapper">
                     <label class="label" for="email1">Company</label>
-                    <input type="text" name="company" class="form-control" id="email1" placeholder="Company Name">
+                    <input type="text" name="company" class="form-control" id="email1" placeholder="Company Name" required>
                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                 </div>
             </div>
@@ -53,7 +53,7 @@
             <div class="form-group basic">
                 <div class="input-wrapper">
                     <label class="label" for="password1">Address</label>
-                    <input type="text" name="address" class="form-control" id="password1" placeholder="Street Address">
+                    <input type="text" name="address" class="form-control" id="password1" placeholder="Street Address" required>
                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                 </div>
             </div>

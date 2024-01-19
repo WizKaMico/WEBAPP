@@ -4,16 +4,14 @@
         <!-- Wallet Card -->
         <div class="section wallet-card-section pt-1">
             <div class="wallet-card">
-            <form action="home.php?action=fullyRegisterAccountIdentification" enctype="multipart/form-data" method="POST">
+            <form action="home.php?action=CompanyCredentialRegistrationVerification" enctype="multipart/form-data" method="POST">
            
             <div class="form-group basic">
                 <div class="input-wrapper">
-                    <label class="label" for="email1">Identification</label>
-                    <select name="identification" class="form-control" required>
-                        <option value="Passport">Passport</option>
-                        <option value="PhilHealth">PhilHealth</option>
-                        <option value="SSS">SSS</option>
-                        <option value="PhilSys">PhilSys</option>
+                    <label class="label" for="email1">Registration Type</label>
+                    <select name="business_type" class="form-control" required>
+                        <option value="DTI">DTI</option>
+                        <option value="SEC">SEC</option>
                     </select>
                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                 </div>
@@ -21,8 +19,8 @@
 
             <div class="form-group basic">
                 <div class="input-wrapper">
-                    <label class="label" for="email1">Identification #</label>
-                    <input type="text" name="identification_number" class="form-control" id="email1" placeholder="Id #" required>
+                    <label class="label" for="email1">Business #</label>
+                    <input type="text" name="business_number" class="form-control" id="email1" placeholder="Business #" required>
                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                 </div>
             </div>
@@ -30,7 +28,7 @@
             <div class="form-group basic">
                 <div class="input-wrapper">
                     <label class="label" for="email1">Identification Picture</label>
-                    <input type="file" name="photo" class="form-control" id="email1" placeholder="Image" required>
+                    <input type="file" name="image_credentials" class="form-control" id="email1" placeholder="Image" required>
                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                 </div>
             </div>

@@ -342,6 +342,32 @@ class appController extends DBController
     return $userCredentials;
    }
 
+
+   function fullyUseIdentificationCompanyCredentials($code, $business_type, $business_number, $photoPath)
+   {
+    $query = "INSERT INTO `tbl_company_registration_credentials` (`code`, `business_type`, `business_number`, `image_credentials`) VALUES (?,?,?,?)";
+
+        $params = array(
+                        
+        array(
+            "param_type" => "s",
+            "param_value" => $code
+        ),array(
+            "param_type" => "s",
+            "param_value" => $business_type
+        ),array(
+            "param_type" => "s",
+            "param_value" => $business_number
+        ),array(
+            "param_type" => "s",
+            "param_value" => $photoPath
+        )
+    );
+
+    $userCredentials = $this->getDBResult($query, $params);
+    return $userCredentials;
+   }
+
    function fullyUseImage($code, $imageData)
     {
         $query = "INSERT INTO `tbl_information_image` (`code`, `image_data`) VALUES (?, ?)";
@@ -401,6 +427,22 @@ class appController extends DBController
     function userIdentity($code)
     {
         $query = "SELECT * FROM tbl_user_information_identification TUS WHERE TUS.code = ?";
+
+        $params = array(
+            
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function companyCredentials($code)
+    {
+        $query = "SELECT * FROM tbl_company_registration_credentials TUS WHERE TUS.code = ?";
 
         $params = array(
             
@@ -996,7 +1038,13 @@ class appController extends DBController
     }
 
     function myAppointmentListPendingInprogress($code){
-        $query = "SELECT * FROM tbl_user_booking TUB LEFT JOIN tbl_user_store_services TUSS ON TUB.sid = TUSS.sid LEFT JOIN tbl_user_information_store TUIS ON TUSS.code = TUIS.code LEFT JOIN tbl_user_information TUI ON TUB.booked_by = TUI.code WHERE TUSS.code = ? AND TUB.status = 'PENDING' OR TUB.status = 'CONFIRM'";
+        $query = "SELECT * 
+        FROM tbl_user_booking TUB 
+        LEFT JOIN tbl_user_store_services TUSS ON TUB.sid = TUSS.sid 
+        LEFT JOIN tbl_user_information_store TUIS ON TUSS.code = TUIS.code 
+        LEFT JOIN tbl_user_information TUI ON TUB.booked_by = TUI.code 
+        WHERE TUSS.code = ?  
+          AND (TUB.status = 'PENDING' OR TUB.status = 'CONFIRM')";
  
         $params = array(
             array(
@@ -1715,10 +1763,51 @@ class appController extends DBController
         $this->insertDB($query, $params);
     }
 
+    function paypalPaymentDeposit($status,$code,$amount,$transaction_id)
+    {
+        $query = "INSERT INTO tbl_user_company_deposit (code, status, transaction_id, amount, date_created) VALUES (?,?,?,?,CURDATE())";
+        $params = array(             
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            ),array(
+                "param_type" => "s",
+                "param_value" => $status
+            ),array(
+                "param_type" => "s",
+                "param_value" => $transaction_id
+            ),array(
+                "param_type" => "i",
+                "param_value" => $amount
+            )
+        );
+    
+        $this->insertDB($query, $params);
+    }
+
     function checkPaymentForthisMonth($code)
     {
         $query = "SELECT *
         FROM tbl_user_monthly_payment_history
+        WHERE code = ? 
+        AND status = 'true'
+        AND MONTH(date_created) = MONTH(NOW())
+        AND YEAR(date_created) = YEAR(NOW())";
+        $params = array(             
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            )
+        );
+    
+        $TotalEmployeeResult = $this->getDBResult($query, $params);
+        return $TotalEmployeeResult; 
+    }
+
+    function checkDepositPaymentForNewOwner($code)
+    {
+        $query = "SELECT *
+        FROM tbl_user_company_deposit
         WHERE code = ? 
         AND status = 'true'
         AND MONTH(date_created) = MONTH(NOW())

@@ -82,6 +82,7 @@
 									<td>
 										<a href='#edit_".$row['user_id']."' class='btn btn-success btn-sm' data-toggle='modal'><span class='glyphicon glyphicon-edit'></span>Activate/Deactivate</a>
 										<a href='#approval_".$row['user_id']."' class='btn btn-success btn-sm' data-toggle='modal'><span class='glyphicon glyphicon-edit'></span>Approve/DisApprove</a>
+										<a href='view.php?code=".$row['code']."' class='btn btn-success btn-sm'><span class='glyphicon glyphicon-edit'></span>View</a>
 									</td>
 								</tr>";
 								include('edit_delete_modal.php');

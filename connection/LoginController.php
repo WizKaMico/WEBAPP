@@ -73,12 +73,16 @@ if (! empty($_GET["action"])) {
                         if ($userCredentials[0]["service_approval"] != 'APPROVED') {
                             if ($userCredentials[0]["status"] == 'BANNED') {
                                 header('Location: index.php?view=BANNED');
+                            } else if($userCredentials[0]["status"] == 'VERIFIED'){
+                                header('Location: security.php');    
                             } else {
                                 header('Location: index.php?view=COMPANYSTAT');
                             }
                         } else {
                             if ($userCredentials[0]["status"] == 'BANNED') {
                                 header('Location: index.php?view=BANNED');
+                            } else if($userCredentials[0]["status"] == 'VERIFIED'){
+                                header('Location: security.php');    
                             } else {
                                 header('Location: security.php');
                             }
