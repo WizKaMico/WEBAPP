@@ -13,7 +13,7 @@
          <div class="form-group basic">
             <div class="input-wrapper">
                 <label class="label" for="email1">Phone</label>
-                <input type="number" name="phone" class="form-control" id="email1" placeholder="Your Phone Number" required>
+                <input type="text" name="phone" id="email1"  class="form-control" pattern="[0-9]{11}" title="Please enter a valid 11-digit Philippine phone number" placeholder="09531599179" required>
                 <i class="clear-input">
                     <ion-icon name="close-circle"></ion-icon>
                 </i>
@@ -44,14 +44,94 @@
         </div>
 
         <div class="form-group basic">
-            <div class="input-wrapper">
-                <label class="label" for="password2">Password</label>
-                <input type="password" name="password" class="form-control" id="password2" placeholder="Type Password" required>
-                <i class="clear-input">
-                    <ion-icon name="close-circle"></ion-icon>
-                </i>
-            </div>
-        </div>
+    <div class="input-wrapper">
+        <label class="label" for="password">Password</label>
+        <input type="password" name="password" class="form-control" id="password" placeholder="Type Password" required minlength="8">
+        <i class="clear-input">
+            <ion-icon name="close-circle"></ion-icon>
+        </i>
+        <span toggle="#password" class="toggle-password">Show</span>
+    </div>
+</div>
+
+<div class="form-group basic">
+    <div class="input-wrapper">
+        <label class="label" for="confirm_password">Confirm Password</label>
+        <input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="Re-enter Password" required>
+        <span id="password_match" class="password-match"></span>
+    </div>
+</div>
+
+<div class="password-strength">
+    <span class="weak" style="display: none;">Weak</span>
+    <span class="medium" style="display: none;">Medium</span>
+    <span class="strong" style="display: none;">Strong</span>
+</div>
+
+<script>
+    document.querySelector('.toggle-password').addEventListener('click', function() {
+        const passwordField = document.querySelector(this.getAttribute('toggle'));
+        if (passwordField.getAttribute('type') === 'password') {
+            passwordField.setAttribute('type', 'text');
+            this.innerHTML = 'Hide';
+        } else {
+            passwordField.setAttribute('type', 'password');
+            this.innerHTML = 'Show';
+        }
+    });
+
+    document.getElementById('password').addEventListener('input', function() {
+        const password = this.value;
+        const weakSpan = document.querySelector('.weak');
+        const mediumSpan = document.querySelector('.medium');
+        const strongSpan = document.querySelector('.strong');
+
+        if (password.length === 0) {
+            weakSpan.style.display = 'none';
+            mediumSpan.style.display = 'none';
+            strongSpan.style.display = 'none';
+            return;
+        }
+
+        if (password.length >= 8) {
+            weakSpan.style.display = 'none';
+        } else {
+            weakSpan.style.display = 'inline';
+            return;
+        }
+
+        if (!password.match(/[A-Z]/) || !password.match(/[a-z]/) || !password.match(/[0-9]/) || !password.match(/[^A-Za-z0-9]/)) {
+            mediumSpan.style.display = 'inline';
+        } else {
+            mediumSpan.style.display = 'none';
+        }
+
+        if (password.length >= 8 && password.match(/[A-Z]/) && password.match(/[a-z]/) && password.match(/[0-9]/) && password.match(/[^A-Za-z0-9]/)) {
+            strongSpan.style.display = 'none';
+        } else {
+            strongSpan.style.display = 'inline';
+        }
+    });
+
+    document.getElementById('confirm_password').addEventListener('input', function() {
+        const confirmPassword = this.value;
+        const password = document.getElementById('password').value;
+        const passwordMatchSpan = document.getElementById('password_match');
+
+        if (confirmPassword === password && confirmPassword !== '') {
+            passwordMatchSpan.textContent = 'Passwords match';
+            passwordMatchSpan.classList.remove('password-not-match');
+            passwordMatchSpan.classList.add('password-match');
+        } else {
+            passwordMatchSpan.textContent = 'Passwords do not match';
+            passwordMatchSpan.classList.remove('password-match');
+            passwordMatchSpan.classList.add('password-not-match');
+        }
+    });
+</script>
+
+
+
 
 
         <div class="custom-control custom-checkbox mt-2">

@@ -6,15 +6,18 @@ $portCont = new appController();
 $userSession = $portCont->getUserDetails($session_id);
 $code = $userSession[0]['code'];
 $myCompany = $portCont->getCompanyDetails($code);
+$checkProfilePicture = $portCont->getProfilePicture($code);
 $userDetails = $portCont->getUserCompleteDetails($code);
 $clientBookingDetails =  $portCont->myTotalBookings($code);
 $clientBookingDetailsToday = $portCont->myBookingsToday($code);
 $OwnerBookingDetails = $portCont->myOwnerTotalBookings($code);
+$OwnerBookingDetailsCompleted = $portCont->myOwnerTotalBookingsCompleted($code);
 $OwnerBookingDetailsToday = $portCont->myOwnerTotalBookingsToday($code);
 $OwnerServiceCount = $portCont->myServiceList($code);
 $OwnerPromoCount = $portCont->myPromoListList($code);
 $OwnerEmployeeCount = $portCont->myEmployeeList($code);
 $checkifpaymentwasmadethismonth = $portCont->checkPaymentForthisMonth($code);
+$checkDeposit = $portCont->checkDepositPaymentForNewOwner($code);
 
 
 $myRentalSetting = $portCont->myRentPaymentSetting();
@@ -54,6 +57,7 @@ if(!empty($_GET['tracking'])){
                                 'INFORMATION' => $portCont->userInformation($personal_code),
                                 'SERVICE' => $portCont->userStore($personal_code),
                                 'IDENTITY' => $portCont->userIdentity($personal_code),
+                                'COMPANYCREDENTIAL' => $portCont->companyCredentials($personal_code),
                                 'MYIMAGE' => $portCont->userVerification($personal_code),
                             ];
                             
@@ -130,18 +134,18 @@ if(!empty($_GET['tracking'])){
             }
         break;
 
-        case "fullyRegisterAccountIdentification": 
+        case "CompanyCredentialRegistrationVerification": 
             if(isset($_POST['proceed'])){
 
                 $code = $userSession[0]['code'];
-                $identification = $_POST['identification'];
-                $identification_number = $_POST['identification_number'];
-                $photoName = $_FILES['photo']['name'];
-                $photoTmpName = $_FILES['photo']['tmp_name'];
+                $business_type = $_POST['business_type'];
+                $business_number = $_POST['business_number'];
+                $photoName = $_FILES['image_credentials']['name'];
+                $photoTmpName = $_FILES['image_credentials']['tmp_name'];
 
-                if(!empty($code) && !empty($identification) && !empty($identification_number) && !empty($photoName))
+                if(!empty($code) && !empty($business_type) && !empty($business_number) && !empty($photoName))
                 {
-                    $uploadDir = 'UserDetails/' . strtolower($category); // Use '.' for string concatenation in PHP
+                    $uploadDir = 'CompanyCredentialImage/' . strtolower($category); // Use '.' for string concatenation in PHP
 
                     if (!file_exists($uploadDir)) {
                         mkdir($uploadDir, 0777, true);
@@ -152,13 +156,49 @@ if(!empty($_GET['tracking'])){
                     // Move the uploaded file to the directory
                     move_uploaded_file($photoTmpName, $photoPath);
 
-                    $portCont->fullyUseIdentification($code, $identification, $identification_number, $photoPath);
+                    $portCont->fullyUseIdentificationCompanyCredentials($code, $business_type, $business_number, $photoPath);
                     header('Location: home.php?view=MYIMAGE');
                 }
 
                 
             }
             break;
+
+
+            case "fullyRegisterAccountIdentification": 
+                if(isset($_POST['proceed'])){
+    
+                    $code = $userSession[0]['code'];
+                    $identification = $_POST['identification'];
+                    $identification_number = $_POST['identification_number'];
+                    $photoName = $_FILES['photo']['name'];
+                    $photoTmpName = $_FILES['photo']['tmp_name'];
+    
+                    if(!empty($code) && !empty($identification) && !empty($identification_number) && !empty($photoName))
+                    {
+                        $uploadDir = 'UserDetails/' . strtolower($category); // Use '.' for string concatenation in PHP
+    
+                        if (!file_exists($uploadDir)) {
+                            mkdir($uploadDir, 0777, true);
+                        }
+                        
+                        $photoPath = $uploadDir . '/' . $photoName;
+                        
+                        // Move the uploaded file to the directory
+                        move_uploaded_file($photoTmpName, $photoPath);
+    
+                        $portCont->fullyUseIdentification($code, $identification, $identification_number, $photoPath);
+                        // this is me
+                        if($userSession[0]['designation'] == 2){
+                        header('Location: home.php?view=COMPANYCREDENTIAL');
+                        }else{
+                        header('Location: home.php?view=MYIMAGE');    
+                        }
+                    }
+    
+                    
+                }
+                break;
 
             case "uploadmycompanyphoto":
                 if(isset($_POST['proceed'])){
@@ -203,6 +243,48 @@ if(!empty($_GET['tracking'])){
                 }
                 break;
 
+            case "uploadmyprofilepicture":
+                if(isset($_POST['proceed'])){
+                    $user_code = $code;
+                    $photoName = $_FILES['photo']['name'];
+                    $photoTmpName = $_FILES['photo']['tmp_name'];
+
+                    if(!empty($photoName) && !empty($user_code)){
+                        $checkifThisHasImage = $portCont->checkProfilePicture($user_code);
+
+                        if(!empty($checkifThisHasImage)){
+                            $uploadDir = 'uploads' . strtolower($category); // Use '.' for string concatenation in PHP
+
+                            if (!file_exists($uploadDir)) {
+                                mkdir($uploadDir, 0777, true);
+                            }
+                            
+                            $photoPath = $uploadDir . '/' . $photoName;
+                            
+                            // Move the uploaded file to the directory
+                            move_uploaded_file($photoTmpName, $photoPath);
+        
+                            $portCont->updateProfilePicture($user_code, $photoPath);
+                            header('Location: home.php?view=SETTING');
+                        }else{
+                            $uploadDir = 'uploads' . strtolower($category); // Use '.' for string concatenation in PHP
+
+                            if (!file_exists($uploadDir)) {
+                                mkdir($uploadDir, 0777, true);
+                            }
+                            
+                            $photoPath = $uploadDir . '/' . $photoName;
+                            
+                            // Move the uploaded file to the directory
+                            move_uploaded_file($photoTmpName, $photoPath);
+        
+                            $portCont->uploadProfilePicture($user_code, $photoPath);
+                            header('Location: home.php?view=SETTING');
+                        }
+                    }
+                }
+                break;
+
 
             case "fullyRegisterAccountImage":
                 
@@ -211,6 +293,7 @@ if(!empty($_GET['tracking'])){
                     if (isset($_POST['captured_image'])) {
                         $code = $userSession[0]['code'];
                         $imageData = $_POST["captured_image"];
+                       
             
                         // Save the image to the upload folder
                         $target_dir = "uploads/";
@@ -227,7 +310,7 @@ if(!empty($_GET['tracking'])){
                             // Now, save the file path to the database
                             $result = $portCont->fullyUseImage($code, $target_file);
             
-                            if ($result) {
+                            if (!empty($result)) {
                                 header('Location: home.php?view=HOME');
                             } else {
                                  // Error uploading image
@@ -237,6 +320,8 @@ if(!empty($_GET['tracking'])){
                              // Error uploading image
                               header('Location: home.php?view=ERROR1');
                         }
+
+
                     } else {
                         // File already exists
                         header('Location: home.php?view=ERROR2');
@@ -574,6 +659,21 @@ if(!empty($_GET['tracking'])){
                                             $portCont->paypalPayment($status,$code,$amount,$transaction_id);
                                             header('Location: home.php?view=MYCOMPANY&message=success');
                                         }
+                                        break;
+
+                                    case "paypalTransDeposit":
+                                        if(isset($_GET['success'])){
+                                            $status = $_GET['success'];
+                                            $code = $_GET['code'];
+                                            $amount = $_GET['amount'];
+                                            $transaction_id = $_GET['transaction_id'];
+                                            $portCont->paypalPaymentDeposit($status,$code,$amount,$transaction_id);
+                                            header('Location: home.php?view=HOME&message='.$status);
+                                        }
+                                        break;
+
+                                    case "logout":
+                                        header('Location: home.php?message=logout');
                                         break;
 
 

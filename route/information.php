@@ -9,7 +9,7 @@
             <div class="form-group basic">
                 <div class="input-wrapper">
                     <label class="label" for="email1">Firstname</label>
-                    <input type="text" name="fname" class="form-control" id="email1" placeholder="Firstname">
+                    <input type="text" name="fname" class="form-control" id="email1" placeholder="Firstname" required>
                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                 </div>
             </div>
@@ -17,7 +17,7 @@
             <div class="form-group basic">
                 <div class="input-wrapper">
                     <label class="label" for="email1">Middlename</label>
-                    <input type="text" name="mname" class="form-control" id="email1" placeholder="Middlename">
+                    <input type="text" name="mname" class="form-control" id="email1" placeholder="Middlename" required>
                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                 </div>
             </div>
@@ -25,7 +25,7 @@
             <div class="form-group basic">
                 <div class="input-wrapper">
                     <label class="label" for="email1">Lastname</label>
-                    <input type="text" name="lname" class="form-control" id="email1" placeholder="Lastname">
+                    <input type="text" name="lname" class="form-control" id="email1" placeholder="Lastname" required>
                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                 </div>
             </div>
@@ -69,7 +69,7 @@
             <div class="form-group basic">
                 <div class="input-wrapper">
                     <label class="label" for="password1">Address</label>
-                    <input type="text" name="address" class="form-control" id="password1" placeholder="Street Address">
+                    <input type="text" name="address" class="form-control" id="password1" placeholder="Street Address" required>
                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                 </div>
             </div>

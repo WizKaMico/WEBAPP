@@ -27,3 +27,5 @@
         </a>
     </div>
     <!-- * App Bottom Menu -->
+
+    <?php include('modal/promptLocation.php'); ?>

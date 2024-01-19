@@ -9,9 +9,26 @@
                       
                     </div>
                     <div class="right">
+                    <?php if(!empty($userSession[0]['service_approval']) || $userSession[0]['service_approval'] == 'APPROVED'){ ?>
                         <a href="#" class="button" data-toggle="modal" data-target="#addService">
                             <ion-icon name="add-outline"></ion-icon>
                         </a>
+                    <?php } else { ?>
+                        <?php if(!empty($checkDeposit)) { ?>
+                        <?php if($checkDeposit[0]['status'] == 'true'){ ?>
+                        <a href="#" class="button" data-toggle="modal" data-target="#addDeposit">
+                            <ion-icon name="add-outline"></ion-icon>
+                        </a>
+                        <?php } else { ?>
+                        <a href="#" class="button" data-toggle="modal" data-target="#addDeposit">
+                            <ion-icon name="add-outline"></ion-icon>
+                        </a>
+                        <?php } }else{ ?>
+                        <a href="#" class="button" data-toggle="modal" data-target="#addDeposit">
+                            <ion-icon name="add-outline"></ion-icon>
+                        </a>    
+                        <?php } ?>
+                    <?php } ?>
                     </div>
                 </div>
                 <!-- * Balance -->
@@ -24,9 +41,10 @@
         <?php include('modal/companyServices.php'); ?> 
         <?php include('modal/companyPromo.php'); ?> 
         <?php include('modal/addEmployee.php'); ?>
+        <?php include('modal/addDeposit.php'); ?>
         <!-- * Apply Loan Action Sheet -->
 
-        
+        <?php if(!empty($userSession[0]['service_approval']) || $userSession[0]['service_approval'] == 'APPROVED'){ ?>
         <!-- Stats -->
         <div class="section">
             <div class="row mt-2">
@@ -39,6 +57,16 @@
                   </a>
                 </div> 
                 <div class="col-6">
+                  <a href="home.php?view=MYCOMPLETED">
+                    <div class="stat-box">
+                        <div class="title">COMPLETED</div>
+                        <div class="value"><?php echo $OwnerBookingDetailsCompleted[0]['total']; ?></div>
+                    </div>
+                  </a>
+                </div> 
+            </div>
+            <div class="row mt-2">
+                <div class="col-6">
                     <div class="stat-box">
                       <a data-toggle="modal" data-target="#addService">
                         <div class="title">TOTAL SERVICES</div>
@@ -46,7 +74,14 @@
                         <div class="value"><?php echo $OwnerServiceCount[0]['total']; ?></div>
                     </div>
                 </div>
-                </a>
+                <div class="col-6">
+                    <div class="stat-box">
+                        <a data-toggle="modal" data-target="#addBookingPromo">
+                            <div class="title">TOTAL PROMO</div>
+                        </a>
+                           <div class="value"><?php echo $OwnerPromoCount[0]['total']; ?></div>
+                    </div>
+                </div>
             </div>
             <div class="row mt-2">
                 <div class="col-6">
@@ -57,19 +92,7 @@
                         </div>
                 </a>
                 </div>
-              
                 <div class="col-6">
-                    <div class="stat-box">
-                        <a data-toggle="modal" data-target="#addBookingPromo">
-                            <div class="title">TOTAL PROMO</div>
-                        </a>
-                           <div class="value"><?php echo $OwnerPromoCount[0]['total']; ?></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-2">
-                <div class="col-12">
                   <a href="#" class="button" data-toggle="modal" data-target="#addEmployee">
                         <div class="stat-box">
                             <div class="title">TOTAL EMPLOYEE</div>
@@ -78,6 +101,10 @@
                    </a>
                 </div>
             </div>
+
+            <!-- <div class="row mt-2">
+               
+            </div> -->
 
            
           
@@ -170,3 +197,55 @@
         
             </div>
         </div>
+
+        <?php } else { ?>
+        <?php if(!empty($checkDeposit)) { ?>
+            <?php if($checkDeposit[0]['status'] == 'true'){ ?>
+            <!-- Stats -->
+            <div class="section">
+                <div class="row mt-2">
+                    <div class="col-12">
+                    <a href="#">
+                        <div class="stat-box">
+                            <div class="title" style="text-align:center; color:green;">DEPOSIT ON YOUR ACCOUNT : SUCCESFULL</div>
+                            <div class="value">Hi! partner,  the deposit amount of <?php echo $checkDeposit[0]['amount'];?> has been succesfully credit on our account with reference number  <?php echo $checkDeposit[0]['transaction_id'];?> <br /><br /> Wait for the admins approval for you to start selling your service</div>
+                        </div>
+                    </a>
+                    </div> 
+                </div>
+            </div>
+            <!-- * Stats -->
+            <?php } else { ?>
+            <!-- Stats -->
+            <div class="section">
+                <div class="row mt-2">
+                    <div class="col-12">
+                    <a href="home.php?view=MYDEPOSIT">
+                        <div class="stat-box">
+                            <div class="title" style="text-align:center; color:red;">DEPOSIT ON YOUR ACCOUNT : FAILED</div>
+                            <div class="value">Hi! partner,  the deposit amount of <?php echo $checkDeposit[0]['amount'];?> has not been succesfully credit on our account with reference number  <?php echo $checkDeposit[0]['transaction_id'];?>. It was Declined </div>
+                        </div>
+                    </a>
+                    </div> 
+                </div>
+            </div>
+            <!-- * Stats -->
+            <?php } ?>
+        <?php } else { ?>
+         <!-- Stats -->
+         <div class="section">
+            <div class="row mt-2">
+                <div class="col-12">
+                  <a href="home.php?view=MYDEPOSIT">
+                    <div class="stat-box">
+                        <div class="title" style="text-align:center; color:red;">DEPOSIT ON YOUR ACCOUNT</div>
+                        <div class="value">Hi! partner, we would need a deposit for us to fully approved your account. Its for our safety to ensure that we will be getting a CUT in-case you get a booking from our system </div>
+                    </div>
+                  </a>
+                </div> 
+            </div>
+        </div>
+        <!-- * Stats -->
+        <?php } ?>
+        
+        <?php } ?>

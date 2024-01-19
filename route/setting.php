@@ -40,6 +40,11 @@
                                 Information
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#profile" role="tab">
+                                Profile
+                            </a>
+                        </li>
                         <?php  if($userSession[0]['designation'] == 2){ ?>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#company" role="tab">
@@ -132,6 +137,30 @@
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel">
+                               <form action="home.php?view=SETTING&action=uploadmyprofilepicture" enctype="multipart/form-data" method="POST">
+                                    <?php if(!empty($checkProfilePicture[0]['image_data'])) { ?>
+                                    <center><img src="<?php echo $checkProfilePicture[0]['image_data']; ?>" style=" width:50%; height:200px;"/></center>   
+                                    <?php } else { ?>
+                                    <center><img src="./assets/img/company_logo.png" style=" width:50%; height:200px;"/></center>   
+                                    <?php } ?>
+                                    <div class="form-group basic">
+                                        <div class="input-wrapper">
+                                            <label class="label" for="email1">Profile Picture</label>
+                                            <input type="file" name="photo" class="form-control" id="email1" placeholder="Image">
+                                            <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group basic">
+                                        <div class="input-wrapper">
+                                        <button type="submit" name="proceed" class="btn btn-primary btn-block btn-lg">UPLOAD</button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                    
                         </div>
                         <div class="tab-pane fade" id="company" role="tabpanel">
                             COMPANY

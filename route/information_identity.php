@@ -9,7 +9,7 @@
             <div class="form-group basic">
                 <div class="input-wrapper">
                     <label class="label" for="email1">Identification</label>
-                    <select name="identification" class="form-control">
+                    <select name="identification" class="form-control" required>
                         <option value="Passport">Passport</option>
                         <option value="PhilHealth">PhilHealth</option>
                         <option value="SSS">SSS</option>
@@ -22,7 +22,7 @@
             <div class="form-group basic">
                 <div class="input-wrapper">
                     <label class="label" for="email1">Identification #</label>
-                    <input type="text" name="identification_number" class="form-control" id="email1" placeholder="Id #">
+                    <input type="text" name="identification_number" class="form-control" id="email1" placeholder="Id #" required>
                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                 </div>
             </div>
@@ -30,7 +30,7 @@
             <div class="form-group basic">
                 <div class="input-wrapper">
                     <label class="label" for="email1">Identification Picture</label>
-                    <input type="file" name="photo" class="form-control" id="email1" placeholder="Image">
+                    <input type="file" name="photo" class="form-control" id="email1" placeholder="Image" required>
                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                 </div>
             </div>

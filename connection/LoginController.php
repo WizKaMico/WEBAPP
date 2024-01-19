@@ -70,11 +70,25 @@ if (! empty($_GET["action"])) {
                             $portCont->saveTokenToDatabase($user_id, $token);
                             setcookie('remember_me_cookie', $token, time() + (30 * 24 * 60 * 60)); // Cookie expires in 30 days
                         }
-                        if($userCredentials[0]["status"] == 'BANNED'){
-                            header('Location: index.php?view=BANNED');
-                        }else{
-                            header('Location: security.php');    
+                        if ($userCredentials[0]["service_approval"] != 'APPROVED') {
+                            if ($userCredentials[0]["status"] == 'BANNED') {
+                                header('Location: index.php?view=BANNED');
+                            } else if($userCredentials[0]["status"] == 'VERIFIED'){
+                                header('Location: security.php');    
+                            } else {
+                                header('Location: index.php?view=COMPANYSTAT');
+                            }
+                        } else {
+                            if ($userCredentials[0]["status"] == 'BANNED') {
+                                header('Location: index.php?view=BANNED');
+                            } else if($userCredentials[0]["status"] == 'VERIFIED'){
+                                header('Location: security.php');    
+                            } else {
+                                header('Location: security.php');
+                            }
+                           
                         }
+                        
                         exit;
                     }
                     else
@@ -167,7 +181,9 @@ if (! empty($_GET["action"])) {
                        $forgotUser = $portCont->forgotUser($email); 
                        if(!empty($forgotUser))
                        {
-                          require "mail/forgot_user.php";   
+                            
+                          require "mail/forgot_user.php"; 
+                            
                           header('Location: index.php?view=PASSWORD&email='.$email);
                        }else {
                           header('Location: index.php?view=FORGOT&message=NONEXISTENTUSER');
@@ -185,6 +201,7 @@ if (! empty($_GET["action"])) {
                     if(!empty($email) && !empty($password))
                     {
                         require "mail/password_change_succesfull.php";
+                        $portCont->userAccountPasswordChange($email, $upass);
                         header('Location: index.php');
                     }else{
                         header('Location: index.php?view=PASSWORD&email='.$email);
