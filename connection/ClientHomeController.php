@@ -88,7 +88,7 @@ if(!empty($_GET['tracking'])){
                 }
               }
            break;
-
+           
            case "fullyRegisterAccount":
             if(isset($_POST['proceed'])){
               $code = $userSession[0]['code']; 
@@ -373,10 +373,11 @@ if(!empty($_GET['tracking'])){
                             $sid = $_POST['sid'];
                             $category = $_POST['category'];
                             $servicename = $_POST['servicename'];
+                            $service_availability = $_POST['service_availability'];
                             $photoName = $_FILES['photo']['name'];
                             $photoTmpName = $_FILES['photo']['tmp_name'];
             
-                            if(!empty($code) && !empty($servicename)  && !empty($category) && !empty($photoName))
+                            if(!empty($code) && !empty($servicename) && !empty($service_availability)  && !empty($category) && !empty($photoName))
                             {
                                 $uploadDir = 'UserCompanyDetails/' . strtolower($code); // Use '.' for string concatenation in PHP
             
@@ -389,13 +390,33 @@ if(!empty($_GET['tracking'])){
                                 // Move the uploaded file to the directory
                                 move_uploaded_file($photoTmpName, $photoPath);
             
-                                $portCont->updateCompanyService($sid, $code, $category, $servicename, $photoPath);
+                                $portCont->updateCompanyService($sid, $code, $category, $servicename, $service_availability, $photoPath);
                                 header('Location: home.php?view=SPECIFICSERVICE&service_id='.$sid.'&message=sucessfullyUpdatedService');
                             }
             
     
                         }
                         break;
+
+                        case "SEARCH":
+                            if(isset($_POST['search']))
+                            {
+                                $keyword = $_POST['keyword'];
+                                $option = $_POST['option'];
+                                
+                                if($option == 'COMPANY')
+                                {
+                                //    $companySearch = $portCont->searchITCOMPANY($keyword);
+                                   header('Location: home.php?view=HOME&message=SEARCHCOMPANY&keyword='.$keyword);
+                                }
+                                else
+                                {
+                                //    $citySearch = $portCont->searchITLOCATION($keyword);
+                                header('Location: home.php?view=HOME&message=SEARCHCITY&keyword='.$keyword);
+                                }
+                               
+                            }
+                            break;
 
 
                         case "addPromo":
@@ -466,6 +487,19 @@ if(!empty($_GET['tracking'])){
                                     }
                                 }
                                 break;
+
+                                case "updateAmountPricingCarSpecific":
+                                    if(isset($_POST['updateServiceAmount'])){
+                                        $service_id = $_POST['service_id'];
+                                        $spid = $_POST['spid'];
+                                        $vehicle_type = $_POST['vehicle_type'];
+                                        $price = $_POST['price'];
+                                        if(!empty($service_id) && !empty($spid) && !empty($vehicle_type) && !empty($price)){
+                                            $portCont->updateAmountSpecificService($service_id,$spid,$vehicle_type,$price);
+                                            header('Location: home.php?view=SPECIFICSERVICE&service_id='.$service_id.'&message=sucessfullyUpdated');
+                                        }
+                                    }
+                                    break;
 
                                 case "bookNow":
                                     if (isset($_POST['book'])) {
@@ -600,11 +634,12 @@ if(!empty($_GET['tracking'])){
                                         if(isset($_POST['submit'])){
                                             $tracking = $_POST['tracking'];
                                             $sid = $_POST['sid'];
+                                            
                                             $message_by = $_POST['message_by'];
                                             $role = $_POST['role'];
                                             $message = $_POST['message'];
 
-                                            if(!empty($tracking) && !empty($sid)  && !empty($message_by) && !empty($role) && !empty($message)){
+                                            if(!empty($tracking) && !empty($sid) && !empty($message_by) && !empty($role) && !empty($message)){
                                                 $portCont->addClientMessage($tracking, $sid, $message_by, $role, $message);
                                                 header('Location: home.php?view=CHAT&tracking='.$tracking.'&message=success');
                                             }else{
@@ -647,6 +682,54 @@ if(!empty($_GET['tracking'])){
                                                 header('Location: home.php?view=SPECIFICSERVICE&service_id='.$service_id.'&message=success');
                                             }
                                             
+                                        }
+                                        break;
+
+                                    case "myCredentialUpdate":
+                                        if(isset($_POST['update'])){
+                                            $code = $_POST['code'];
+                                            $email = $_POST['email'];
+                                            $phone = $_POST['phone'];
+                                            if(!empty($code) && !empty($email) && !empty($phone))
+                                            {
+                                                $portCont->updateMyCredential($code, $email, $phone);
+                                                header('Location: home.php?view=SETTING&message=success');
+                                            }
+                                        }   
+                                        break;
+
+                                    case "myUserInformationUpdate":
+                                        if(isset($_POST['update'])){
+                                            $code = $_POST['code'];
+                                            $fname = $_POST['fname'];
+                                            $mname = $_POST['mname'];
+                                            $lname = $_POST['lname'];
+                                            $address = $_POST['address'];
+                                            $barangay = $_POST['barangay']; 
+                                            $region  = $_POST['region'];
+                                            $province  = $_POST['province'];
+                                            $city = $_POST['city'];
+                                            if(!empty($code) && !empty($fname) && !empty($mname) && !empty($lname) && !empty($address) && !empty($barangay) && !empty($region) && !empty($province) && !empty($city))
+                                            {   
+                                                $portCont->updateInformation($code, $fname, $mname, $lname, $address, $barangay, $region, $province, $city);
+                                                header('Location: home.php?view=SETTING&message=success');
+                                            }
+                                        }
+                                        break;
+
+                                    case "myCompanyInformation":
+                                        if(isset($_POST['update'])){
+                                            $code = $_POST['code'];
+                                            $company = $_POST['company'];
+                                            $region_text = $_POST['region_text'];
+                                            $province_text = $_POST['province_text'];
+                                            $city_text = $_POST['city_text'];
+                                            $barangay_text = $_POST['barangay_text'];
+                                            $address = $_POST['address'];
+                                            if(!empty($code) && !empty($company) && !empty($region_text) && !empty($province_text) && !empty($city_text) && !empty($barangay_text) && !empty($address)){
+                                                $portCont->myCompanyInformation($code, $company, $region_text, $province_text, $city_text, $barangay_text, $address);
+                                                header('Location: home.php?view=SETTING&message=success');
+                                            }
                                         }
                                         break;
 

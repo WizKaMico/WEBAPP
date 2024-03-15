@@ -21,8 +21,9 @@ if (! empty($_GET["action"])) {
                  {
                     $email = $userCredentials[0]["email"];
                     $code = rand(6666,9999);
+
                     $portCont->userMailValidation($email, $code);
-                    require "mail/security.php";
+                    // require "mail/security.php";
     
                     if($userCredentials[0]["designation"] == 1)
                     {
@@ -119,8 +120,9 @@ if (! empty($_GET["action"])) {
                         }
                         exit;
                     } 
+
                 }else{
-    
+                    header('location: index.php?view=LOGIN&response=error');
                 }
               }
             }
@@ -141,7 +143,7 @@ if (! empty($_GET["action"])) {
 
                         if(!empty($existingUser))
                         {
-                            header('Location: index.php?view=REGISTER&message=FAILED');
+                            header('Location: index.php?view=REGISTER&response=existing');
                         }else{
                             $code = rand(6666,9999);
                             $status = 'UNVERIFIED';

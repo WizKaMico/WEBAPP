@@ -65,7 +65,7 @@
 					</thead>
 					<tbody>
 						<?php
-							include_once('connection.php');
+							include_once('../connection/connection.php');
 							$sql = "SELECT * FROM tbl_company_rental_setting";
 
 							//use for MySQLi-OOP

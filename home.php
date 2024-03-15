@@ -261,6 +261,7 @@
             function search(e) {
                 let searchTerm = e.target.value.toLowerCase();
                 let titles = document.querySelectorAll('.companyContainer .title');
+                let city = document.querySelectorAll('.companyContainer .city');
 
                 titles.forEach((title) => {
                     let tit = title.textContent.toLowerCase();
@@ -269,6 +270,35 @@
                 });
             }
         });
+
+//     document.addEventListener("DOMContentLoaded", function() {
+//     let searchInput = document.querySelector('.search-input');
+//     let searchOption = document.querySelector('.search-option');
+//     let companyContainers = document.querySelectorAll('.companyContainer');
+
+//     // Set default search option to "company"
+//     searchOption.value = "COMPANY";
+
+//     searchInput.addEventListener('input', function() {
+//         let searchTerm = searchInput.value.trim().toLowerCase();
+//         let selectedOption = searchOption.value.toUpperCase();
+
+//         companyContainers.forEach((container) => {
+//             let title = container.querySelector('.title').textContent.toLowerCase();
+//             let city = container.querySelector('.city').textContent.toLowerCase();
+//             let shouldDisplay = (selectedOption === 'COMPANY' && title.includes(searchTerm)) ||
+//                                 (selectedOption === 'CITY' && city.includes(searchTerm));
+
+//             container.style.display = shouldDisplay ? 'block' : 'none';
+//         });
+//     });
+// });
+
+
+
+
+
+
     </script>
 
 

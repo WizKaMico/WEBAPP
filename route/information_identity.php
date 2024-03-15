@@ -14,6 +14,7 @@
                         <option value="PhilHealth">PhilHealth</option>
                         <option value="SSS">SSS</option>
                         <option value="PhilSys">PhilSys</option>
+                        <option value="Drivers License">Drivers License</option>
                     </select>
                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                 </div>

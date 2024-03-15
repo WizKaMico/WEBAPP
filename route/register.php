@@ -13,7 +13,9 @@
          <div class="form-group basic">
             <div class="input-wrapper">
                 <label class="label" for="email1">Phone</label>
-                <input type="text" name="phone" id="email1"  class="form-control" pattern="[0-9]{11}" title="Please enter a valid 11-digit Philippine phone number" placeholder="09531599179" required>
+                <!-- <input type="number" name="phone" id="email1"  class="form-control" pattern="[0-9]{11}" title="Please enter a valid 11-digit Philippine phone number" placeholder="09531599179" required> -->
+                <input type="number" name="phone" id="email1" class="form-control" placeholder="09531599179" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" required>
+
                 <i class="clear-input">
                     <ion-icon name="close-circle"></ion-icon>
                 </i>
@@ -67,6 +69,9 @@
     <span class="medium" style="display: none;">Medium</span>
     <span class="strong" style="display: none;">Strong</span>
 </div>
+
+
+
 
 <script>
     document.querySelector('.toggle-password').addEventListener('click', function() {

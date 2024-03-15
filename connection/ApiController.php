@@ -23,6 +23,22 @@ class appController extends DBController
         return $userCredentials;
     }
 
+    function checkIfCodeExistingAlready($code)
+    {
+        $query = "SELECT * FROM tbl_user_security TU  WHERE TU.code = ?";
+
+        $params = array(
+            
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
 
     function userMailValidation($email, $code)
     {
@@ -198,10 +214,72 @@ class appController extends DBController
 
    }
 
+   function checkNewMessage($tracking)
+   {
+    date_default_timezone_set('Asia/Manila');
+
+    $query = "SELECT * FROM tbl_user_message TUM JOIN tbl_users TU ON TUM.message_by = TU.code WHERE  TUM.tracking = ? AND TUM.date_send = CURDATE()";
+
+        $params = array(
+            
+            array(
+                "param_type" => "s",
+                "param_value" => $tracking
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+   }
+
+
+
+   function searchITCOMPANY($keyword)
+    {
+        date_default_timezone_set('Asia/Manila');
+
+        $query = "SELECT * FROM tbl_users TU LEFT JOIN tbl_user_information_store TUIS ON TU.code = TUIS.code WHERE TU.designation = 2 AND TUIS.company LIKE ?";
+
+        // Prepare the parameter with wildcards for the LIKE operator
+        $keyword = '%' . $keyword . '%';
+
+        $params = array(  
+            array(
+                "param_type" => "s",
+                "param_value" => $keyword
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+
+
+   function searchITLOCATION($keyword)
+   {
+       date_default_timezone_set('Asia/Manila');
+   
+       $query = "SELECT * FROM tbl_users TU LEFT JOIN tbl_user_information_store TUIS ON TU.code = TUIS.code WHERE TU.designation = 2 AND TUIS.city_text LIKE ?";
+   
+       // Prepare the parameter with wildcards for the LIKE operator
+       $keyword = '%' . $keyword . '%';
+   
+       $params = array(  
+           array(
+               "param_type" => "s",
+               "param_value" => $keyword
+           )
+       );
+       
+       $userCredentials = $this->getDBResult($query, $params);
+       return $userCredentials;
+   }
+   
 
     function userValidatesEmail($email, $code)
     {
-        $query = "SELECT * FROM tbl_user_security TUS WHERE  TUS.email = ? AND TUS.code = ? AND date_created = CURDATE()";
+        $query = "SELECT * FROM tbl_user_security TUS WHERE  TUS.email = ? AND TUS.code = ? AND TUS.status != 'USED' AND date_created = CURDATE()";
 
         $params = array(
             
@@ -491,22 +569,25 @@ class appController extends DBController
 
     function addCompanyService($code, $category, $servicename, $photoPath)
     {
-        $query = "INSERT INTO `tbl_user_store_services` (`code`, `category`, `servicename`, `image`) VALUES (?,?,?,?)";
+        $query = "INSERT INTO `tbl_user_store_services` (`code`, `category`, `servicename`, `service_availability`, `image`) VALUES (?,?,?,?,?)";
 
         $params = array(
                           
           array(
-              "param_type" => "s",
-              "param_value" => $code
+            "param_type" => "s",
+            "param_value" => $code
           ),array(
             "param_type" => "s",
             "param_value" => $category
           ),array(
-              "param_type" => "s",
-              "param_value" => $servicename
+            "param_type" => "s",
+            "param_value" => $servicename
           ),array(
-              "param_type" => "s",
-              "param_value" => $photoPath
+            "param_type" => "s",
+            "param_value" => 'AVAILABLE'
+          ),array(
+            "param_type" => "s",
+            "param_value" => $photoPath
           )
       );
   
@@ -548,9 +629,9 @@ class appController extends DBController
     }
 
 
-    function updateCompanyService($sid, $code, $category, $servicename, $photoPath)
+    function updateCompanyService($sid, $code, $category, $servicename, $service_availability, $photoPath)
     {
-        $query = "UPDATE tbl_user_store_services SET category = ?, servicename = ?, image = ? WHERE code = ? AND sid = ?";
+        $query = "UPDATE tbl_user_store_services SET category = ?, servicename = ?, service_availability = ?, image = ? WHERE code = ? AND sid = ?";
 
         $params = array(
             
@@ -562,6 +643,9 @@ class appController extends DBController
                 "param_value" => $servicename 
             ), array(
                 "param_type" => "s",
+                "param_value" => $service_availability 
+            ), array(
+                "param_type" => "s",
                 "param_value" => $photoPath 
             ), array(
                 "param_type" => "i",
@@ -569,6 +653,27 @@ class appController extends DBController
             ), array(
                 "param_type" => "i",
                 "param_value" => $sid 
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function updateAmountSpecificService($service_id,$spid,$vehicle_type,$price){
+        $query = "UPDATE tbl_store_service_pricing SET price = ? WHERE spid = ? AND service_id = ?";
+
+        $params = array(
+            
+            array(
+                "param_type" => "i",
+                "param_value" => $price 
+            ), array(
+                "param_type" => "i",
+                "param_value" => $spid 
+            ), array(
+                "param_type" => "i",
+                "param_value" => $service_id 
             )
         );
         
@@ -686,7 +791,7 @@ class appController extends DBController
 
     function getCompanyInformationOfASpecificService($ccode)
     {
-        $query = "SELECT * FROM tbl_user_store_services TUIS LEFT JOIN tbl_user_promo TUP ON TUIS.sid = TUP.servicepromo  WHERE TUIS.code = ?";
+        $query = "SELECT * FROM tbl_user_store_services TUIS LEFT JOIN tbl_user_promo TUP ON TUIS.sid = TUP.servicepromo  WHERE TUIS.code = ? AND TUIS.service_availability = 'AVAILABLE'";
  
         $params = array(
             
@@ -1045,6 +1150,27 @@ class appController extends DBController
         LEFT JOIN tbl_user_information TUI ON TUB.booked_by = TUI.code 
         WHERE TUSS.code = ?  
           AND (TUB.status = 'PENDING' OR TUB.status = 'CONFIRM')";
+ 
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+
+    function myAppointmentListInprogress($code){
+        $query = "SELECT * 
+        FROM tbl_user_booking TUB 
+        LEFT JOIN tbl_user_store_services TUSS ON TUB.sid = TUSS.sid 
+        LEFT JOIN tbl_user_information_store TUIS ON TUSS.code = TUIS.code 
+        LEFT JOIN tbl_user_information TUI ON TUB.booked_by = TUI.code 
+        WHERE TUSS.code = ?  
+          AND (TUB.status = 'IN-PROGRESS')";
  
         $params = array(
             array(
@@ -1853,6 +1979,102 @@ class appController extends DBController
                 "param_type" => "s",
                 "param_value" => $email 
             )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function updateMyCredential($code, $email, $phone)
+    {
+        $query = "UPDATE tbl_users SET email = ?, phone = ? WHERE code = ?";
+
+        $params = array(
+            
+            array(
+                "param_type" => "s",
+                "param_value" => $email
+            ), array(
+                "param_type" => "s",
+                "param_value" => $phone 
+            ), array(
+                "param_type" => "i",
+                "param_value" => $code 
+            ) 
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function updateInformation($code, $fname, $mname, $lname, $address, $barangay, $region, $province, $city)
+    {
+        $query = "UPDATE tbl_user_information SET fname = ?, mname = ?, lname = ?, region = ?, province = ?, city = ?, barangay = ?, address = ?  WHERE code = ?";
+
+        $params = array(
+            
+            array(
+                "param_type" => "s",
+                "param_value" => $fname
+            ), array(
+                "param_type" => "s",
+                "param_value" => $mname 
+            ), array(
+                "param_type" => "s",
+                "param_value" => $lname 
+            ), array(
+                "param_type" => "s",
+                "param_value" => $region 
+            ), array(
+                "param_type" => "s",
+                "param_value" => $province 
+            ), array(
+                "param_type" => "s",
+                "param_value" => $city 
+            ), array(
+                "param_type" => "s",
+                "param_value" => $barangay 
+            ), array(
+                "param_type" => "s",
+                "param_value" => $address 
+            ), array(
+                "param_type" => "i",
+                "param_value" => $code 
+            ) 
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function myCompanyInformation($code, $company, $region_text, $province_text, $city_text, $barangay_text, $address)
+    {
+        $query = "UPDATE tbl_user_information_store SET company = ?, region_text = ?, province_text = ?, city_text = ?, barangay_text = ?, address = ?  WHERE code = ?";
+
+        $params = array(
+            
+            array(
+                "param_type" => "s",
+                "param_value" => $company
+            ), array(
+                "param_type" => "s",
+                "param_value" => $region_text 
+            ), array(
+                "param_type" => "s",
+                "param_value" => $province_text 
+            ), array(
+                "param_type" => "s",
+                "param_value" => $city_text 
+            ), array(
+                "param_type" => "s",
+                "param_value" => $barangay_text 
+            ), array(
+                "param_type" => "s",
+                "param_value" => $address 
+            ), array(
+                "param_type" => "i",
+                "param_value" => $code 
+            ) 
         );
         
         $userCredentials = $this->getDBResult($query, $params);

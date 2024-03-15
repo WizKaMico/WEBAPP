@@ -105,7 +105,7 @@
                         <li class="uk-nav-divider"></li>
                         <li><a><span class="uk-margin-small-right" uk-icon="file-edit"></span>edit account</a></li>
                         <li class="uk-nav-divider"></li>
-                        <li><a><span class="uk-margin-small-right" uk-icon="sign-out"></span>logout</a></li>
+                        <li><a href="index.php"><span class="uk-margin-small-right" uk-icon="sign-out"></span>logout</a></li>
                     </ul>
                 </div>
             </li>
@@ -178,10 +178,10 @@
                         <a href="monthly.php"><span class="uk-margin-small-right" uk-icon="file-text"></span>Monthly Payment</a>
                     </li>
                     <li>
-                        <a href="service.php"><span class="uk-margin-small-right" uk-icon="folder"></span>Service Account</a>
+                        <a href="service.php"><span class="uk-margin-small-right" uk-icon="folder"></span>Client Account</a>
                     </li>
                     <li>
-                        <a href="account.php"><span class="uk-margin-small-right" uk-icon="comments"></span>Client Account</a>
+                        <a href="account.php"><span class="uk-margin-small-right" uk-icon="comments"></span>Customer Account</a>
                     </li>
                     <li>
                         <a href="payments.php"><span class="uk-margin-small-right" uk-icon="comments"></span>Payment Recieved</a>
@@ -214,7 +214,7 @@
                 <div class="uk-width-12-12 uk-width-12-12@s uk-width-12-12@m uk-width-12-12@l uk-width-12-12@xl">
                     <div class="uk-card uk-card-default uk-card-small uk-card-hover uk-border-rounded">
                         <div class="uk-card-header">
-                        <span class="uk-text-muted">SERVICE ACCOUNT CONFIGURATION</span>
+                        <span class="uk-text-muted">CLIENT ACCOUNT CONFIGURATION</span>
                         </div>
                         <div class="uk-card-body">
                             <div class="uk-overflow-auto">

@@ -56,10 +56,16 @@
                     <div class="tab-content mt-2">
                         <div class="tab-pane fade show active" id="credential" role="tabpanel">
                             CREDENTIAL
+                            <form action="home.php?view=SETTING&action=myCredentialUpdate" method="POST">
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <input type="hidden" class="form-control" name="code" id="email1" value="<?php echo strtoupper($userSession[0]['code']); ?>" required=""/>
+                                </div>
+                            </div>
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">EMAIL</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userSession[0]['email']); ?>" readonly="">
+                                    <input type="text" name="email" class="form-control" id="email1" value="<?php echo strtoupper($userSession[0]['email']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
@@ -67,17 +73,30 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">PHONE</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userSession[0]['phone']); ?>" readonly="">
+                                    <input type="text" name="phone" class="form-control" id="email1" value="<?php echo strtoupper($userSession[0]['phone']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
+
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <button class="btn btn-primary" style="width:100%;" name="update">UPDATE</button>
+                                </div>
+                            </div>
+                           </form>
                         </div>
                         <div class="tab-pane fade" id="information" role="tabpanel">
                            INFORMATION
+                           <form action="home.php?view=SETTING&action=myUserInformationUpdate" method="POST">
+                           <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <input type="hidden" class="form-control" name="code" id="email1" value="<?php echo strtoupper($userSession[0]['code']); ?>" required=""/>
+                                </div>
+                            </div>
                            <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">FIRSTNAME</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userDetails[0]['fname']); ?>" readonly="">
+                                    <input type="text" class="form-control" name="fname" id="email1" value="<?php echo strtoupper($userDetails[0]['fname']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
@@ -85,7 +104,7 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">MIDDLENAME</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userDetails[0]['mname']); ?>" readonly="">
+                                    <input type="text" class="form-control" name="mname" id="email1" value="<?php echo strtoupper($userDetails[0]['mname']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
@@ -93,7 +112,7 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">LASTNAME</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userDetails[0]['lname']); ?>" readonly="">
+                                    <input type="text" class="form-control" name="lname" id="email1" value="<?php echo strtoupper($userDetails[0]['lname']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
@@ -101,7 +120,7 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">ADDRESS</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userDetails[0]['address']); ?>" readonly="">
+                                    <input type="text" class="form-control" id="email1" name="address" value="<?php echo strtoupper($userDetails[0]['address']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
@@ -109,7 +128,7 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">BARANGAY</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userDetails[0]['barangay']); ?>" readonly="">
+                                    <input type="text" class="form-control" id="email1" name="barangay" value="<?php echo strtoupper($userDetails[0]['barangay']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
@@ -117,7 +136,7 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">REGION</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userDetails[0]['region']); ?>" readonly="">
+                                    <input type="text" class="form-control" id="email1" name="region" value="<?php echo strtoupper($userDetails[0]['region']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
@@ -125,7 +144,7 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">PROVINCE</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userDetails[0]['province']); ?>" readonly="">
+                                    <input type="text" class="form-control" id="email1" name="province" value="<?php echo strtoupper($userDetails[0]['province']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
@@ -133,10 +152,16 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">CITY</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userDetails[0]['city']); ?>" readonly="">
+                                    <input type="text" class="form-control" id="email1" name="city" value="<?php echo strtoupper($userDetails[0]['city']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <button class="btn btn-primary" style="width:100%;" name="update">UPDATE</button>
+                                </div>
+                            </div>
+                          </form>
                         </div>
                         <div class="tab-pane fade" id="profile" role="tabpanel">
                                <form action="home.php?view=SETTING&action=uploadmyprofilepicture" enctype="multipart/form-data" method="POST">
@@ -164,10 +189,16 @@
                         </div>
                         <div class="tab-pane fade" id="company" role="tabpanel">
                             COMPANY
+                            <form action="home.php?view=SETTING&action=myCompanyInformation" method="POST">
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <input type="hidden" class="form-control" name="code" id="email1" value="<?php echo strtoupper($userSession[0]['code']); ?>" required=""/>
+                                </div>
+                            </div>
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">COMPANY</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userDetails[0]['company']); ?>" readonly="">
+                                    <input type="text" class="form-control" name="company" id="email1" value="<?php echo strtoupper($userDetails[0]['company']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
@@ -175,7 +206,7 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">ADDRESS</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userDetails[0]['address']); ?>" readonly="">
+                                    <input type="text" class="form-control" name="address" id="email1" value="<?php echo strtoupper($userDetails[0]['address']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
@@ -183,7 +214,7 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">BARANGAY</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userDetails[0]['barangay']); ?>" readonly="">
+                                    <input type="text" class="form-control" name="barangay_text" id="email1" value="<?php echo strtoupper($userDetails[0]['barangay']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
@@ -191,7 +222,7 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">REGION</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userDetails[0]['region']); ?>" readonly="">
+                                    <input type="text" class="form-control" name="region_text" id="email1" value="<?php echo strtoupper($userDetails[0]['region']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
@@ -199,7 +230,7 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">PROVINCE</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userDetails[0]['province']); ?>" readonly="">
+                                    <input type="text" class="form-control" id="email1" name="province_text" value="<?php echo strtoupper($userDetails[0]['province']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
@@ -207,10 +238,17 @@
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">CITY</label>
-                                    <input type="text" class="form-control" id="email1" value="<?php echo strtoupper($userDetails[0]['city']); ?>" readonly="">
+                                    <input type="text" class="form-control" id="email1" name="city_text" value="<?php echo strtoupper($userDetails[0]['city']); ?>" required=""/>
                                     <i class="clear-input"><ion-icon name="close-circle"></ion-icon></i>
                                 </div>
                             </div>
+
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <button class="btn btn-primary" style="width:100%;" name="update">UPDATE</button>
+                                </div>
+                            </div>
+                          </form>
 
                            
                         </div>

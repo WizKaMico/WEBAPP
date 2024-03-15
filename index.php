@@ -15,6 +15,35 @@
     <!-- <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32">
     <link rel="shortcut icon" href="assets/img/favicon.png"> -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <?php
+        if (!empty($_GET['response'])) {
+            if ($_GET['response'] == 'error') {
+                echo '
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            icon: "error",
+                            title: "An error occured during login",
+                            text: "You might be using a wrong username / password"
+                        });
+                    });
+                </script>';
+            }else{
+                echo '
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            icon: "error",
+                            title: "An error occured during registration",
+                            text: "Account already used an existing email & phone"
+                        });
+                    });
+                </script>';
+            }
+        }
+        ?>
 </head>
 
 <body class="bg-light">

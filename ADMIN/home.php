@@ -105,7 +105,7 @@
                         <li class="uk-nav-divider"></li>
                         <li><a><span class="uk-margin-small-right" uk-icon="file-edit"></span>edit account</a></li>
                         <li class="uk-nav-divider"></li>
-                        <li><a><span class="uk-margin-small-right" uk-icon="sign-out"></span>logout</a></li>
+                        <li><a href="index.php"><span class="uk-margin-small-right" uk-icon="sign-out"></span>logout</a></li>
                     </ul>
                 </div>
             </li>
@@ -178,10 +178,10 @@
                         <a href="monthly.php"><span class="uk-margin-small-right" uk-icon="file-text"></span>Monthly Payment</a>
                     </li>
                     <li>
-                        <a href="service.php"><span class="uk-margin-small-right" uk-icon="folder"></span>Service Account</a>
+                        <a href="service.php"><span class="uk-margin-small-right" uk-icon="folder"></span>Client Account</a>
                     </li>
                     <li>
-                        <a href="account.php"><span class="uk-margin-small-right" uk-icon="comments"></span>Client Account</a>
+                        <a href="account.php"><span class="uk-margin-small-right" uk-icon="comments"></span>Customer Account</a>
                     </li>
                     <li>
                         <a href="payments.php"><span class="uk-margin-small-right" uk-icon="comments"></span>Payment Recieved</a>

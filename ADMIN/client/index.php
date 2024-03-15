@@ -64,7 +64,7 @@
 					</thead>
 					<tbody>
 						<?php
-							include_once('connection.php');
+							include_once('../connection/connection.php');
 							$sql = "SELECT * FROM tbl_users WHERE designation =  3";
 
 							//use for MySQLi-OOP

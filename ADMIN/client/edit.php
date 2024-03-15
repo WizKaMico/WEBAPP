@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	include_once('connection.php');
+	include_once('../connection/connection.php');
 
 	if(isset($_POST['edit'])){
 		$user_id = $_POST['user_id'];

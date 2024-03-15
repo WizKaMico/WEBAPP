@@ -52,6 +52,26 @@
                                 </div>
                             </div>
 
+                            <script>
+
+                            document.addEventListener("DOMContentLoaded", function() {
+                                let dateInput = document.querySelector('input[type="date"]');
+
+                                dateInput.addEventListener('input', function() {
+                                    let selectedDate = new Date(dateInput.value);
+                                    let currentDate = new Date();
+
+                                    if (selectedDate < currentDate) {
+                                        // If the selected date is before today, clear the input field
+                                        dateInput.value = '';
+                                        alert('Please select today\'s date or a date in the future.');
+                                    }
+                                });
+                            });
+
+
+                            </script>
+
                             <div class="form-group basic">
                                 <div class="input-wrapper">
                                     <label class="label" for="email1">TIME</label>

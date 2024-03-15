@@ -34,9 +34,12 @@
                 <?php 
                     $serviceId = $_GET['service_id'];
                     $serviceSpecific = $portCont->getSpecificServices($serviceId); 
+
                     if(!empty($serviceSpecific)){
                     foreach ($serviceSpecific as $key => $value) {
+                        
                 ?>   
+                           <?php include('modal/companySpecificServices.php'); ?> 
                 <div class="col-12">
                 <ul class="nav nav-tabs style1" role="tablist">
                             <li class="nav-item">
@@ -64,8 +67,10 @@
                                 <div style="overflow-x:auto;">
                                 <table>
                                     <tr>
+                                    <th>SPID</th>
                                     <th>CAR TYPE</th>
                                     <th>AMOUNT</th>
+                                    <th>ACTION</th>
                                     </tr>
                                     <?php  
                                     $service_id = $_GET['service_id'];
@@ -74,10 +79,16 @@
                                             foreach ($serviceSpecificRating as $key => $value) {    
                                     ?>
                                     <tr>
+                                    <td><?php echo $serviceSpecificRating[$key]['spid']; ?></td>           
                                     <td><?php echo $serviceSpecificRating[$key]['vehicle_type']; ?></td>
                                     <td><?php echo $serviceSpecificRating[$key]['price']; ?></td>
+                                    <td>
+                                        <a href="#" data-toggle="modal" data-target="#priceSpecificUpdate_<?php echo $serviceSpecificRating[$key]['spid'];?>" class="btn btn-primary">UPDATE</a> 
+                                    </td>
                                     </tr>
-                                    <?php } }  ?>
+                                    <?php include('modal/companySpecificServicesPricingUpdate.php'); ?> 
+                                    <?php }  ?>
+                                    <?php } ?>
                                     
                                 </table>
                                 </div>
@@ -86,8 +97,7 @@
                     </div>
                 </div>
                 <?php } ?>
-                        
-                <?php include('modal/companySpecificServices.php'); ?> 
+        
             
                 <?php } ?>
             </div>

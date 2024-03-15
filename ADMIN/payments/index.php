@@ -63,7 +63,7 @@
 					</thead>
 					<tbody>
 						<?php
-							include_once('connection.php');
+							include_once('../connection/connection.php');
 							$sql = "SELECT * FROM tbl_user_monthly_payment_history TUMPH LEFT JOIN tbl_users TU ON TUMPH.code = TU.code";
 
 							//use for MySQLi-OOP
